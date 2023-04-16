@@ -1,0 +1,51 @@
+<header>
+    <div id="header-bar">
+        <div id="pzsphoto-logo">
+            <img src="../assets/logo/pzs photo logo.svg" alt="PZS Photo logo" height="60" routerLink="/" />
+        </div>
+        <div id="full-menu">
+            <div class="menu-item" routerLink="login" *ngIf="!isLoggedIn
+            ">Login</div>
+            <div class="menu-bar" *ngIf="!isLoggedIn
+            ">|</div>
+            <div class="menu-item" (click)="openLogoutDialog()" *ngIf="isLoggedIn">Logout</div>
+            <div class="menu-bar" *ngIf="isLoggedIn
+            ">|</div>
+            <div class="menu-item" routerLink="signup" *ngIf="!isLoggedIn">Sign-up</div>
+            <div class="menu-bar" *ngIf="!isLoggedIn
+            ">|</div>
+            <div class="menu-item" routerLink="contact">Contact</div>
+            <div class="menu-bar" *ngIf="isAdmin">|</div>
+            <div class="menu-item" *ngIf="isAdmin">
+                Admin
+                <div class="dropdown">
+                    <div class="dropdown-content">
+                        <a routerLink="upload">Upload Photos</a>
+                        <a routerLink="users">Users</a>
+                        <a routerLink="statistics">Statistics</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="mobile-menu">
+            <span> </span>
+            <span> </span>
+            <span> </span>
+        </div>
+    </div>
+</header>
+<router-outlet></router-outlet>
+<footer id="footer">
+    <div id="footer-center">
+        <button (click)="onScrollToTop()" *ngIf="windowScrolled">
+            Back to top
+        </button>
+        <div>
+            <p>(c) Copyright 2023 Peltan Zsolt</p>
+        </div>
+    </div>
+    <div id="footer-right">
+        <div>Number of visitors:</div>
+        <div>{{ visitorsNr }}</div>
+    </div>
+</footer>

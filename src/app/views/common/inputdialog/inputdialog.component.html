@@ -1,0 +1,12 @@
+<form [formGroup]="formGroup">
+    <p> <strong>{{data.messageHeader}}</strong></p>
+    <mat-form-field>
+        <mat-label>Input new category name</mat-label>
+        <input matInput maxlength="50" inputmode="full-width-latin" placeholder="category name"
+            formControlName="category">
+    </mat-form-field>
+    <div mat-dialog-actions>
+        <button mat-button (click)="onNoClick()">Cancel</button>
+        <button mat-button (click)="onOkClick()" [disabled]="formGroup.invalid">OK</button>
+    </div>
+</form>

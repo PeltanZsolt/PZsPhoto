@@ -1,0 +1,57 @@
+<div id="carousel">
+    <div id="pagination">
+        <a id="arrow-left" (click)="onArrowClick('ArrowLeft')"> <span>
+                < </span> </a>
+        <div class="image-container">
+            <img [src]="photoUrl" id="image">
+        </div>
+        <a id="arrow-right" (click)="onArrowClick('ArrowRight')"> <span>
+                > </span> </a>
+    </div>
+    <div id="attributes" *ngIf="photoAttributes">
+        <div id="first-row">
+            <app-rating [averageRating]="photoAttributes.averageRating!" [height]="1.4" [colorful]="true"></app-rating>
+            <p><strong>{{photoAttributes.viewsNr}}</strong> views</p>
+        </div>
+        <p><strong>Title:</strong> {{photoAttributes.title}}</p>
+        <p><strong>Place:</strong> {{photoAttributes.place}}</p>
+        <p><strong>Date:</strong> {{photoAttributes.year}}</p>
+        <p><strong>Description:</strong> {{photoAttributes.description}}</p>
+        <div id="comments-header">
+            <p><strong>Comments:</strong> </p>
+            <div class="buttons-container">
+                <button mat-button color="primary" (click)="onAddNewComment()" *ngIf="!showNewComment"
+                    matTooltip="Post new comment" matTooltipPosition="above">
+                    <mat-icon>comment</mat-icon>
+                </button>
+                <button mat-button color="primary" (click)="onUploadComment()" *ngIf="showNewComment"
+                    matTooltip="Upload comment" matTooltipPosition="above"
+                    [disabled]="!(showNewComment && commentForm.valid && newRating > 0)">
+                    <mat-icon>upload</mat-icon>
+                </button>
+                <button mat-button color="primary" (click)="onCancelNewComment()" *ngIf="showNewComment"
+                    matTooltip="Cancel" matTooltipPosition="above">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </div>
+        </div>
+        <div id="comments-body">
+            <form [formGroup]="commentForm" [hidden]="!showNewComment">
+                <app-rating (click)="onRatingClicked($event)" [averageRating]="newRating" [colorful]="true"
+                    [showStar0]="true" [height]="1.3"></app-rating>
+                <mat-form-field appearance="fill" id="commentInputField" style="width: 100%">
+                    <mat-label>Leave a comment:</mat-label>
+                    <textarea matInput formControlName="newCommentText" rows="4" id="textarea" minlength="2"
+                        style="height: 10rem;font-size: 1rem;"></textarea>
+                </mat-form-field>
+            </form>
+            <div class="comments-list">
+                <div class="comment" *ngFor="let comment of comments">
+                    <app-rating [averageRating]="comment.rating">{{comment.rating}}</app-rating>
+                    <p class="user"> {{comment.user}} :</p>
+                    <p class="comment">{{comment.comment}}</p> <br>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

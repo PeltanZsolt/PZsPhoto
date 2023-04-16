@@ -1,0 +1,16 @@
+.errordialog-wrapper {
+    text-align: center;
+    p {
+        margin: auto;
+        color: white;
+    }
+    button {
+        margin: auto;
+        color: white;
+    }
+}
+$error-color: #97001c;
+
+::ng-deep .mat-dialog-container {
+    background-color: $error-color;
+}

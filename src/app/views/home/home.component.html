@@ -1,0 +1,8 @@
+<ul>
+    <li *ngFor="let hero of heroesArray; index as i">
+            <a routerLink="{{'gallery/'+ categories[i]}}" >
+                <img [src]="hero" />
+                <h2>{{categories[i]}} </h2>
+            </a>
+    </li>
+</ul>

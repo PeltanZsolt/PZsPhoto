@@ -1,0 +1,58 @@
+<h1>UPLOAD PHOTOS</h1>
+<div class="file-upload">
+  <form [formGroup]="formGroup">
+    <input type="file" class="file-input" #fileSelect (change)="onFileChange($event)"
+      >
+    <div mat-dialog-actions align="end">
+      <button mat-raised-button color="primary" type="button" (click)=fileSelect.click()>Select a
+        photo to upload...</button>
+    </div>
+        <p id="filename" appearance="standard">File selected: {{selectedFile? selectedFile.name : 'No file selected'}}</p>
+
+    <mat-form-field appearance="standard">
+      <mat-label>Title</mat-label>
+      <input matInput maxlength="50" inputmode="full-width-latin" placeholder="Type the photo's title"
+        formControlName="title">
+      <mat-error>Title is required.</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="standard">
+      <mat-label>Select a category</mat-label>
+      <mat-select matNativeControl name="category" formControlName="category">
+        <mat-option *ngFor="let category of categories" [value]="category">{{category}}</mat-option>
+        <mat-option (click)="onCreateNewCategory()">Create new category...</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="standard">
+      <mat-label>Description:</mat-label>
+      <textarea matInput placeholder="description" formControlName="description" rows="4"></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="standard">
+      <mat-label>Year of capture:</mat-label>
+      <mat-select matNativeControl formControlName="year" placeholder="Year of capture">
+        <mat-option>---</mat-option>
+        <mat-option *ngFor="let y of yearsRange" [value]="y">{{y}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="standard">
+      <mat-label>Place</mat-label>
+      <input matInput maxlenght="30" inputmode="full-width-latin" placeholder="Type the place of capture"
+        formControlName="place">
+      <mat-error>Place is required.</mat-error>
+    </mat-form-field>
+
+    <div mat-dialog-actions align="end">
+      <button mat-raised-button color="primary" type="submit" [disabled]="!formGroup.valid"
+        (click)="onUploadPhoto()">Submit</button>
+    </div>
+
+  </form>
+  <div id="thumbnail">
+
+    <p *ngIf="!selectedFile">No photo selected.</p>
+    <img [src]="previewImg" *ngIf="selectedFile">
+  </div>
+</div>

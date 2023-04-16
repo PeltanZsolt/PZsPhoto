@@ -1,0 +1,36 @@
+$color-lightgrey: #d4d4d4;
+$color-menu-text: #444444;
+$formWidth: 600px;
+
+form {
+    h1 {
+        background-color: $color-lightgrey;
+        text-align: center;
+        color: $color-menu-text;
+        margin: 1rem auto;
+        width: 98%;
+    }
+    width: calc($formWidth - 6%);
+    margin: 2rem auto;
+    padding: 3%;
+    background-color: #d4d4d4;
+    .file-input {
+        display: none;
+    }
+    mat-form-field,
+    mat-select,
+    label {
+        font-size: 1rem;
+        color: $color-menu-text;
+        display: block;
+        margin: auto;
+    }
+    button {
+        font-size: 1rem;
+        display: block;
+        margin: auto;
+    }
+    mat-select {
+        width: 98%;
+    }
+}

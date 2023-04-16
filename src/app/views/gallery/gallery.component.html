@@ -1,0 +1,20 @@
+<ul class="gallery-list">
+    <li *ngFor="let photo of photoList; index as i" id="{{photo.id}}">
+        <a routerLink="{{photo.id}}">
+            <app-imageelement id="{{photo.id}}" ></app-imageelement>
+        </a>
+        <section class="img-attributes">
+            <div class="left-column">
+                <p [style.color]="photo.title? 'initial' : 'lightgrey'">{{photo.title ? photo.title :
+                    "No title"}} </p>
+                <p>{{photo.place}}, {{photo.year}}</p>
+            </div>
+            <div class="right-column">
+                <app-rating [averageRating]="photo.averageRating!"></app-rating>
+                <p class="viewsNr" *ngIf="photo.id">
+                    {{photo.viewsNr }} views
+                </p>
+            </div>
+        </section>
+    </li>
+</ul>

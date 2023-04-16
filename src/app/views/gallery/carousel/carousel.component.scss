@@ -1,0 +1,142 @@
+:root {
+    --image-height: 0px;
+}
+$color-lightgrey: #d4d4d4;
+$color-dark-background: rgb(32, 32, 32);
+#carousel {
+    background-color: $color-dark-background;
+    display: flex;
+    flex-direction: row;
+    margin: 0;
+    padding: 10px;
+
+    #pagination {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        box-sizing: border-box;
+        #arrow-left,
+        #arrow-right {
+            display: block;
+            width: 20rem;
+            z-index: 1;
+            height: var(--image-height);
+            text-shadow: 2px 2px 4px #313131;
+            flex-wrap: nowrap;
+            user-select: none;
+            text-decoration: none;
+            font-family: "Courier New", Courier, monospace;
+            font-size: 3rem;
+            font-weight: 900;
+            &:hover {
+                cursor: pointer;
+            }
+            span {
+                color: $color-lightgrey;
+                position: relative;
+                display: block;
+                transform: translateY(calc(var(--image-height) / 2 - 10px));
+            }
+        }
+        #arrow-left {
+            text-align: left;
+            margin-right: -20rem;
+        }
+        #arrow-right {
+            text-align: right;
+            margin-left: -20rem;
+        }
+        .image-container {
+            user-select: none;
+            display: block;
+            width: 80vw;
+            margin: auto;
+            img {
+                display: block;
+                max-width: 100%;
+                height: var(--image-height);
+                object-fit: cover;
+                margin: auto;
+            }
+        }
+    }
+    #attributes {
+        border-left: 1px solid;
+        border-color: rgb(77, 77, 77);
+        padding-left: 9px;
+        height: var(--image-height);
+        width: calc(20vw - 40px);
+        margin-left: 10px;
+        color: $color-lightgrey;
+        overflow-y: hidden;
+        #first-row {
+            display: flex;
+            justify-content: space-between;
+            app-rating {
+                height: 1rem;
+            }
+        }
+        #comments-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            height: 2rem;
+            div.buttons-container {
+                display: inline;
+            }
+        }
+        #comments-body {
+            display: block;
+            width: calc(20vw - 40px);
+            form {
+                width: calc(20vw - 40px);
+                margin-left: 0;
+                padding: 0;
+                mat-label {
+                    padding: 0;
+                }
+                .ng-tns-c88-0 {
+                    padding-left: 0;
+                    padding-right: 0;
+                }
+                mat-label {
+                    color: $color-lightgrey;
+                }
+                .mat-focused .placeholder {
+                    color: $color-lightgrey;
+                }
+            }
+            p {
+                height: 1rem;
+                text-align: left;
+            }
+            .comments-list {
+                margin-top: 0.5rem;
+                display: block;
+                height: calc(var(--image-height) - 11rem - 10px);
+                overflow-y: auto;
+                overflow-x: hidden;
+                // overflow: hidden;
+                .comment {
+                    display: inline;
+                    max-height: 100%;
+                    margin-bottom: 0.6rem;
+                    app-rating {
+                        display: inline;
+                        height: 1rem;
+                        margin-left: 0;
+                    }
+                    p.user {
+                        display: inline;
+                        font-weight: 500;
+                    }
+                    p.comment {
+                        overflow: hidden;
+                        display: inline;
+                        font-weight: 300;
+                    }
+                }
+            }
+        }
+    }
+}

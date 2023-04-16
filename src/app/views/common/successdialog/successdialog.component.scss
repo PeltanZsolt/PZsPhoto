@@ -1,0 +1,16 @@
+$color-menu-text: #444444;
+.dialog-wrapper {
+    text-align: center;
+    p {
+        margin: auto;
+        color: $color-menu-text;
+    }
+    button {
+        margin: auto;
+        color: $color-menu-text;
+        background-color: inherit;
+    }
+}
+::ng-deep .mat-dialog-container {
+    background-color: white;
+}

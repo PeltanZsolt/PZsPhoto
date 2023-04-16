@@ -1,0 +1,49 @@
+$color-lightgrey: #d4d4d4;
+
+@keyframes fadeInAnimation {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+     }
+}
+main {
+    background-color: $color-lightgrey;
+    text-align: center;
+    width: 30rem;
+    box-shadow: 2px 2px 4px rgb(197, 197, 197);
+    border-radius: 6px;
+    top: 8rem;
+    margin: 2rem auto;
+    padding: 1rem;
+    animation: fadeInAnimation ease 1s;
+    animation-iteration-count: 1;
+}
+
+p {
+    margin: 0.5rem auto;
+    font-size: 1.2rem;
+}
+
+footer a {
+    background-color: rgb(126, 126, 126);
+    padding: 0.5rem;
+    text-decoration: none;
+    top: 10rem;
+    margin: auto;
+    color: white;
+    border-radius: 6px;
+}
+
+footer a:hover {
+    background-color: rgb(158, 158, 158);
+}
+
+footer {
+    background-color: white;
+}
+
+img {
+    height: 1.2rem;
+}

@@ -1,0 +1,105 @@
+$color-lightgrey: #d4d4d4;
+$color-menu-text: #444444;
+$formWidth: 600px;
+$formHeight: 620px;
+
+h1 {
+    background-color: $color-lightgrey;
+    text-align: center;
+    color: $color-menu-text;
+    margin: 1rem auto;
+    width: 98%;
+}
+.file-upload {
+    width: calc(2.5 * $formWidth);
+    max-width: 98%;
+    margin: 1rem auto;
+    display: grid;
+    gap: 10px;
+    grid-template-columns: $formWidth calc(1.5 * $formWidth);
+    form {
+        display: inline-block;
+        width: calc($formWidth - 6%);
+        height: calc($formHeight - 6%);
+        margin: auto;
+        padding: 3%;
+        background-color: #d4d4d4;
+        .file-input {
+            display: none;
+        }
+        #filename {
+            font-size: 1rem;
+            color: $color-menu-text;
+            display: block;
+            margin: 1rem auto auto auto;
+            text-align: center;
+        }
+        mat-form-field,
+        mat-select,
+        label {
+            font-size: 1rem;
+            color: $color-menu-text;
+            display: block;
+            margin: auto;
+        }
+        button {
+            font-size: 1rem;
+            display: block;
+            margin: auto;
+        }
+        mat-select {
+            width: 98%;
+        }
+    }
+    #thumbnail {
+        background-color: $color-lightgrey;
+        height: $formHeight;
+        width: calc(1.5 * $formWidth);
+        display: grid;
+        p {
+            margin: auto;
+            color: $color-menu-text;
+            font-size: 1rem;
+        }
+        img {
+            max-height: $formHeight;
+            max-width: calc(1.5 * $formWidth);
+            margin: auto;
+            object-fit: contain;
+        }
+    }
+}
+@media (max-width: calc(2.5 * $formWidth + 2vw + 10px)) {
+    .file-upload {
+        grid-template-columns: auto;
+        grid-template-rows: auto auto;
+        max-width: $formWidth;
+        form {
+            height: 33rem;
+            mat-form-field,
+            button,
+            mat-select,
+            label {
+                font-size: 0.85rem;
+            }
+        }
+        #thumbnail {
+            background-color: $color-lightgrey;
+            height: 46vh;
+            max-height: 46vh;
+            max-width: $formWidth;
+            display: grid;
+            p {
+                margin: auto;
+                color: $color-menu-text;
+                font-size: 1rem;
+            }
+            img {
+                max-width: $formWidth;
+                width: $formWidth;
+                max-height: 46vh;
+                margin: 0 auto auto auto;
+            }
+        }
+    }
+}

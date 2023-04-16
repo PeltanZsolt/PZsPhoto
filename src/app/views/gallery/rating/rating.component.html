@@ -1,0 +1,8 @@
+<span class="rating" >
+    <img src="{{ starNone }}" id="star0" [class]="starsClass" *ngIf="showStar0">
+    <img src="{{ averageRating! < 0.5 ? starOutline : starFilled}}" id="star1" [class]="starsClass">
+    <img src="{{ averageRating! < 1.5 ? starOutline : starFilled}}" id="star2" [class]="starsClass">
+    <img src="{{ averageRating! < 2.5 ? starOutline : starFilled}}" id="star3" [class]="starsClass">
+    <img src="{{ averageRating! < 3.5 ? starOutline : starFilled}}" id="star4" [class]="starsClass">
+    <img src="{{ averageRating! < 4.5 ? starOutline : starFilled}}" id="star5" [class]="starsClass">
+  </span>
