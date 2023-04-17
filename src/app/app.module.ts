@@ -23,30 +23,30 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './views/home/home.component';
+import { LoginComponent } from './views/menu/login/login.component';
+import { SignupComponent } from './views/menu/signup/signup.component';
+import { ContactComponent } from './views/menu/contact/contact.component';
+import { LogoutdialogComponent } from './views/common/closedialog/logoutdialog.component';
 import { UploadComponent } from './views/menu/admin/upload/upload.component';
+import { StatisticsComponent } from './views/menu/admin/statistics/statistics.component';
+import { UsersComponent } from './views/menu/admin/users/users.component';
 import { GalleryComponent } from './views/gallery/gallery.component';
 import { CarouselComponent } from './views/gallery/carousel/carousel.component';
 import { ImageElementComponent } from './views/gallery/img.el/imageelement.component';
+import { RatingComponent } from './views/gallery/rating/rating.component';
+import { SuccessdialogComponent } from './views/common/successdialog/successdialog.component';
+import { InputdialogComponent } from './views/common/inputdialog/inputdialog.component';
+import { ErrordialogComponent } from './views/common/errordialog/errordialog.component';
+import { Error404Component } from './views/common/error404/error404.component';
 
+import { AuthGuardService } from './core/services/auth-guard.service';
+import { AuthService } from './core/services/auth.service';
+import { UserService } from './core/services/user.service';
 import { VisitorsService } from './core/services/visitors.services';
 import { PhotoService } from './core/services/photo.service';
-import { RatingComponent } from './views/gallery/rating/rating.component';
-import { ContactComponent } from './views/menu/contact/contact.component';
-import { LoginComponent } from './views/menu/login/login.component';
-import { SignupComponent } from './views/menu/signup/signup.component';
-import { UsersComponent } from './views/menu/admin/users/users.component';
-import { StatisticsComponent } from './views/menu/admin/statistics/statistics.component';
-import { LogoutdialogComponent } from './views/common/closedialog/logoutdialog.component';
-import { ErrordialogComponent } from './views/common/errordialog/errordialog.component';
-import { CommentService } from './core/services/comment.service';
-import { SuccessdialogComponent } from './views/common/successdialog/successdialog.component';
-import { UserService } from './core/services/user.service';
-import { Error404Component } from './views/common/error404/error404.component';
-import { AuthService } from './core/services/auth.service';
-import { AuthGuardService } from './core/services/auth-guard.service';
-import { JwtInterceptorService } from './core/services/jwt-interceptor.service';
 import { ViewsService } from './core/services/views.services';
-import { InputdialogComponent } from './views/common/inputdialog/inputdialog.component';
+import { CommentService } from './core/services/comment.service';
+import { JwtInterceptorService } from './core/services/jwt-interceptor.service';
 
 @NgModule({
     declarations: [
