@@ -1,8 +1,8 @@
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
 import { VisitorsService } from './core/services/visitors.services';
 import { AuthService } from './core/services/auth.service';
-import { MatDialog } from '@angular/material/dialog';
 import { LogoutdialogComponent } from './views/common/closedialog/logoutdialog.component';
 
 @Component({
@@ -22,7 +22,7 @@ export class AppComponent implements OnInit, OnDestroy {
     constructor(
         private visitorsService: VisitorsService,
         public dialog: MatDialog,
-        private authService: AuthService,
+        private authService: AuthService
     ) {}
 
     @HostListener('window:scroll', [])
@@ -43,7 +43,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
         this.subscriptions.push(
             this.visitorsService.getVisitorsNumber().subscribe((res) => {
-                    this.visitorsNr = res.visitorsCount;
+                this.visitorsNr = res.visitorsCount;
             })
         );
 

@@ -24,6 +24,10 @@ h1 {
         margin: auto;
         padding: 3%;
         background-color: #d4d4d4;
+        button {
+            font-size: 1rem;
+            margin: auto;
+        }
         .file-input {
             display: none;
         }
@@ -42,10 +46,13 @@ h1 {
             display: block;
             margin: auto;
         }
-        button {
-            font-size: 1rem;
-            display: block;
-            margin: auto;
+        section {
+            display: flex;
+            justify-content: center;
+            button {
+                font-size: 1rem;
+                margin: 0 1rem;
+            }
         }
         mat-select {
             width: 98%;

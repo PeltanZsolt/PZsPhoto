@@ -12,27 +12,17 @@ import { environment } from '../../../environments/environment';
 })
 export class ViewsService {
     baseUrl = environment.apiUrl;
-    constructor(private http: HttpClient) {}
 
-    getViewsNumber(photoId: number): Observable<any> {
-        const headers = new HttpHeaders({ 'content-type': 'application/json' });
-        return this.http
-            .post(this.baseUrl + '/visitorsCount', photoId, { headers })
-            .pipe(
-                catchError((error) =>
-                    this.handleError('getViewsNumber', error)
-                )
-            );
-    }
+    constructor(private http: HttpClient) {}
 
     incrementViewsNr(photoId: number): Observable<any> {
         const headers = new HttpHeaders({ 'content-type': 'application/json' });
         const body = { photoId: photoId };
         return this.http
-            .post(this.baseUrl + '/incrementViewsNr', body, { headers })
+            .post(this.baseUrl + '/viewsNr/increment', body, { headers })
             .pipe(
                 catchError((error) =>
-                    this.handleError('incrementViewsNr', error)
+                    this.handleError('viewsNr/increment', error)
                 )
             );
     }
@@ -45,6 +35,6 @@ export class ViewsService {
                 '\n' +
                 error.message
         );
-        return of();
+        return of({error: error.message});
     }
 }

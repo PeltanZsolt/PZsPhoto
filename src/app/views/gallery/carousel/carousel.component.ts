@@ -277,7 +277,7 @@ export class CarouselComponent implements OnInit, AfterContentInit, OnDestroy {
         const newComment = {
             photoId: this.photoAttributes.id!,
             user: this.authService.getAuthVariables().username,
-            comment: this.newCommentText,
+            commentText: this.newCommentText,
             rating: this.newRating,
             viewsNr: 1,
         };
@@ -285,7 +285,7 @@ export class CarouselComponent implements OnInit, AfterContentInit, OnDestroy {
             .postComment(newComment)
             .pipe(
                 tap((res: any) => {
-                    if (res.commentResponse.error) {
+                    if (res.error) {
                         this.dialog.open(ErrordialogComponent, {
                             data: {
                                 messageHeader:
@@ -295,7 +295,7 @@ export class CarouselComponent implements OnInit, AfterContentInit, OnDestroy {
                         });
                         return;
                     }
-                    if (res['commentResponse'][0]['warningStatus'] === 0) {
+                    if (res.averageRating) {
                         const successMessage = 'Comment uploaded successfuly';
                         this.dialog.open(SuccessdialogComponent, {
                             data: {
@@ -327,5 +327,6 @@ export class CarouselComponent implements OnInit, AfterContentInit, OnDestroy {
         this.subscriptions.forEach((sub: Subscription) => {
             sub.unsubscribe();
         });
+        document.onkeydown = null;
     }
 }

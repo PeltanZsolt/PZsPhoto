@@ -1,4 +1,8 @@
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import {
+    HttpClient,
+    HttpErrorResponse,
+    HttpHeaders,
+} from '@angular/common/http';
 import { Observable, catchError, of, switchMap } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
@@ -18,16 +22,22 @@ export class VisitorsService {
                 });
                 return this.http
                     .post(this.url + '/visitorsCount', ipifyRes, { headers })
-                    .pipe(catchError(
-                        (error) => this.handleError('getVisitorsNumber', error)
-                        ));
-            })
+                    .pipe(
+                        catchError((error) =>
+                            this.handleError('getVisitorsNumber', error)
+                        )
+                    );
+            }),
         );
     }
 
     private handleError(operation: string, error: HttpErrorResponse) {
         console.log(
-            'Error occured on VisitorsService.' + operation + ': ' + '\n' + error.message
+            'Error occured on VisitorsService.' +
+                operation +
+                ': ' +
+                '\n' +
+                error.message
         );
         return of();
     }

@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { Photo } from 'src/app/core/models/photo.model';
 import { Subscription } from 'rxjs';
-import { PhotoService } from '../../core/services/photo.service';
 import { MatDialog } from '@angular/material/dialog';
+import { Photo } from '../../core/models/photo.model';
+import { PhotoService } from '../../core/services/photo.service';
 import { ErrorDialogData } from '../../core/models/error.dialog.data.model';
 import { ErrordialogComponent } from '../common/errordialog/errordialog.component';
 

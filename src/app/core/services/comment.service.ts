@@ -24,24 +24,24 @@ export class CommentService {
             .post<any>(this.url + '/comment', body, {
                 headers: headers,
             })
-            .pipe(catchError((error) => this.handleError('login', error)));
+            .pipe(catchError((error) => this.handleError('postComment', error)));
     }
 
     getCommentsByPhotoId(photoId: number): Observable<any> {
         const params = new HttpParams().set('photoId', photoId);
         return this.http
             .get(this.url + '/comment', { params: params })
-            .pipe(catchError((error) => this.handleError('login', error)));
+            .pipe(catchError((error) => this.handleError('getCommentsByPhotoId', error)));
     }
 
     private handleError(operation: string, error: HttpErrorResponse) {
         console.log(
-            'Error occured on VisitorsService.' +
+            'Error occured on CommentService.' +
                 operation +
                 ': ' +
                 '\n' +
                 error.message
         );
-        return of();
+        return of({error: error.message});
     }
 }

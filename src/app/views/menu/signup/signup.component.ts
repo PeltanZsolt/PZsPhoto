@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
 import { Subscription, debounceTime, tap, startWith } from 'rxjs';
-import { User } from 'src/app/core/models/user.model';
-import { UserService } from 'src/app/core/services/user.service';
-import { ErrordialogComponent } from '../../common/errordialog/errordialog.component';
-import { ErrorDialogData } from '../../../core/models/error.dialog.data.model';
-import { SuccessdialogComponent } from '../../common/successdialog/successdialog.component';
-import { SuccessDialogData } from 'src/app/core/models/success.dialog.data.model';
 import { Router } from '@angular/router';
-import { AuthService } from 'src/app/core/services/auth.service';
+import { MatDialog } from '@angular/material/dialog';
+import { User } from '../../../core/models/user.model';
+import { UserService } from '../../../core/services/user.service';
+import { ErrorDialogData } from '../../../core/models/error.dialog.data.model';
+import { ErrordialogComponent } from '../../common/errordialog/errordialog.component';
+import { SuccessDialogData } from '../../../core/models/success.dialog.data.model';
+import { SuccessdialogComponent } from '../../common/successdialog/successdialog.component';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
     selector: 'app-signup',

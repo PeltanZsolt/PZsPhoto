@@ -39,6 +39,6 @@ export class UserService {
                 '\n' +
                 error.message
         );
-        return of();
+        return of({error: error.message});
     }
 }

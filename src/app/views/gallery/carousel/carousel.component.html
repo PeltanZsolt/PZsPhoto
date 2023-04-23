@@ -49,7 +49,7 @@
                 <div class="comment" *ngFor="let comment of comments">
                     <app-rating [averageRating]="comment.rating">{{comment.rating}}</app-rating>
                     <p class="user"> {{comment.user}} :</p>
-                    <p class="comment">{{comment.comment}}</p> <br>
+                    <p class="comment">{{comment.commentText}}</p> <br>
                 </div>
             </div>
         </div>

@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { PhotoService } from '../../../core/services/photo.service';
 import { Subscription } from 'rxjs';
+import { PhotoService } from '../../../core/services/photo.service';
 
 @Component({
     selector: 'app-imageelement',

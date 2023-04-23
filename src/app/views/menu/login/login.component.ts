@@ -1,15 +1,15 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
 import { Subscription, tap } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { User } from '../../../core/models/user.model';
 import { UserService } from '../../../core/services/user.service';
 import { AuthService } from '../../../core/services/auth.service';
-import { ErrordialogComponent } from '../../common/errordialog/errordialog.component';
 import { ErrorDialogData } from '../../../core/models/error.dialog.data.model';
-import { SuccessdialogComponent } from '../../common/successdialog/successdialog.component';
+import { ErrordialogComponent } from '../../common/errordialog/errordialog.component';
 import { SuccessDialogData } from '../../../core/models/success.dialog.data.model';
+import { SuccessdialogComponent } from '../../common/successdialog/successdialog.component';
 
 @Component({
     selector: 'app-login',
@@ -51,6 +51,7 @@ export class LoginComponent implements OnInit, OnDestroy {
                     tap((res) => {
                         this.handleLoginResponse(res);
                     })
+
                 )
                 .subscribe()
         );
@@ -58,7 +59,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     handleLoginResponse(res: any): void {
         switch (res.message) {
-            case `User doesn't exists!`: {
+            case `Invalid username.`: {
                 const data: ErrorDialogData = {
                     messageHeader: res.message,
                     messageBody: `Username doesn't exist. Check username or sign up as a new user.`,
@@ -95,6 +96,17 @@ export class LoginComponent implements OnInit, OnDestroy {
                     res.isAdmin
                 );
                 setTimeout(() => this.router.navigate(['']), 1500);
+                break;
+            }
+            default: {
+                const data: ErrorDialogData = {
+                    messageHeader: 'Error',
+                    messageBody: `Something went wrong. Tray again later.`,
+                    duration: 5000,
+                };
+                this.dialog.open(ErrordialogComponent, {
+                    data: data,
+                });
             }
         }
     }

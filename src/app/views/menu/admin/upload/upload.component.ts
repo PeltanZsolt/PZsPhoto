@@ -2,13 +2,16 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
-import { SuccessdialogComponent } from '../../../common/successdialog/successdialog.component';
-import { InputdialogComponent } from '../../../../views/common/inputdialog/inputdialog.component';
-import { InputDialogData } from '../../../../core/models/input.dialog.data.model';
-import { CategoryInputDialogService } from '../../../../core/services/category.input.dialog.service';
 import { Photo } from '../../../../core/models/photo.model';
 import { PhotoService } from '../../../../core/services/photo.service';
-import { ExtractExif } from '../../../../core/util/extract.year';
+import { InputDialogData } from '../../../../core/models/input.dialog.data.model';
+import { InputdialogComponent } from '../../../../views/common/inputdialog/inputdialog.component';
+import { ErrorDialogData } from '../../../../core/models/error.dialog.data.model';
+import { ErrordialogComponent } from '../../../../views/common/errordialog/errordialog.component';
+import { SuccessDialogData } from '../../../../core/models/success.dialog.data.model';
+import { SuccessdialogComponent } from '../../../common/successdialog/successdialog.component';
+import { CategoryInputDialogService } from '../../../../core/services/category.input.dialog.service';
+import { ExtractExif } from '../../../../core/util/extract.exif';
 
 @Component({
     selector: 'app-upload',
@@ -16,7 +19,7 @@ import { ExtractExif } from '../../../../core/util/extract.year';
     styleUrls: ['../../../../app.component.scss', './upload.component.scss'],
 })
 export class UploadComponent implements OnInit, OnDestroy {
-    selectedFile: File;
+    selectedFile = new File([], '');
     formGroup: FormGroup;
     title: string;
     category: String;
@@ -28,6 +31,7 @@ export class UploadComponent implements OnInit, OnDestroy {
     yearsRange: Number[] = [];
     currentYear: number;
     categories: string[] = [];
+    thumbnailBackground = '';
 
     constructor(
         private photoService: PhotoService,
@@ -37,15 +41,17 @@ export class UploadComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
+        const thumbnailElement = document.getElementById('thumbnail');
+        this.thumbnailBackground = window
+            .getComputedStyle(thumbnailElement!)
+            .getPropertyValue('background-color');
+
         this.formGroup = new FormGroup({
-            title: new FormControl(this.title, Validators.nullValidator),
-            category: new FormControl(this.category, Validators.nullValidator),
-            description: new FormControl(
-                this.description,
-                Validators.nullValidator
-            ),
-            year: new FormControl(this.year),
-            place: new FormControl(this.place, Validators.nullValidator),
+            title: new FormControl(this.title, Validators.required),
+            category: new FormControl(this.category, Validators.required),
+            description: new FormControl(this.description),
+            year: new FormControl(this.year, Validators.required),
+            place: new FormControl(this.place, Validators.required),
         });
 
         this.subscriptions.push(
@@ -89,9 +95,6 @@ export class UploadComponent implements OnInit, OnDestroy {
             reader.onloadend = (e) => {
                 if (e.target && e.target.result) {
                     this.previewImg = e.target.result;
-                    document.getElementById(
-                        'thumbnail'
-                    )!.style.backgroundColor = 'unset';
                 }
             };
         }
@@ -125,25 +128,35 @@ export class UploadComponent implements OnInit, OnDestroy {
                 .uploadPhoto(this.selectedFile, photoAttributes)
                 .subscribe((res) => {
                     if (res.error) {
+                        const dialogData: ErrorDialogData = {
+                            messageHeader: 'Access forbidden',
+                            messageBody: 'You are not authorized to upload.',
+                            duration: 1500,
+                        };
+                        this.dialog.open(ErrordialogComponent, {
+                            data: dialogData,
+                        });
                         return console.log(res.error);
                     }
+
+                    const dialogData: SuccessDialogData = {
+                        message: res.message,
+                        duration: 1000,
+                    };
                     this.dialog.open(SuccessdialogComponent, {
-                        data: {
-                            message: res.message,
-                            duration: 1000,
-                        },
+                        data: dialogData,
                     });
-                    this.resetFormFields();
+
+                    this.resetInputFields();
                 });
             this.subscriptions.push(subscription);
         }
     }
 
-    resetFormFields() {
-        this.formGroup.get('title')?.reset();
-        this.formGroup.get('description')?.reset();
-        this.formGroup.get('year')?.setValue(this.currentYear);
-        this.formGroup.get('place')?.reset();
+    resetInputFields() {
+        this.formGroup.reset();
+        this.selectedFile = new File([], '');
+        this.previewImg = null;
     }
 
     ngOnDestroy(): void {

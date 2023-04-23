@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { SuccessDialogData } from 'src/app/core/models/success.dialog.data.model';
+import { SuccessDialogData } from '../../../core/models/success.dialog.data.model';
 
 @Component({
     selector: 'app-closedialog',
