@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { VisitorsService } from './core/services/visitors.services';
 import { AuthService } from './core/services/auth.service';
 import { LogoutdialogComponent } from './views/common/closedialog/logoutdialog.component';
+import { SocketService } from './core/services/socket.service';
 
 @Component({
     selector: 'app-root',
@@ -22,7 +23,8 @@ export class AppComponent implements OnInit, OnDestroy {
     constructor(
         private visitorsService: VisitorsService,
         public dialog: MatDialog,
-        private authService: AuthService
+        private authService: AuthService,
+        private socketService: SocketService
     ) {}
 
     @HostListener('window:scroll', [])
@@ -48,11 +50,13 @@ export class AppComponent implements OnInit, OnDestroy {
         );
 
         this.subscriptions.push(
-            this.authService.authEventEmitter.subscribe((res) => {
+            this.authService.authEvent$.subscribe((res) => {
                 this.isLoggedIn = res.isLoggedIn;
                 this.isAdmin = res.isAdmin;
             })
         );
+
+        this.socketService.initSocket()
     }
 
     onScrollToTop() {

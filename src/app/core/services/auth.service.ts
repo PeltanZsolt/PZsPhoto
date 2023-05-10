@@ -1,4 +1,6 @@
-import { EventEmitter, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+import { AuthState } from '../models/auth-state.model';
 
 @Injectable({
     providedIn: 'root',
@@ -9,7 +11,10 @@ export class AuthService {
     private jwtToken = '';
     private isAdmin = false;
 
-    public authEventEmitter = new EventEmitter();
+    public authEvent$ = new BehaviorSubject<AuthState>({
+        isLoggedIn: false,
+        isAdmin: false,
+    });
 
     getJwtToken(): string {
         return this.jwtToken;
@@ -35,10 +40,7 @@ export class AuthService {
         this.isLoggedIn = isLoggedIn;
         this.isAdmin = isAdmin;
 
-        this.authEventEmitter.emit({
-            isLoggedIn: this.isLoggedIn,
-            isAdmin: this.isAdmin,
-        });
+        this.authEventSubjNext();
     }
 
     resetAuthVariables(): void {
@@ -47,7 +49,11 @@ export class AuthService {
         this.isLoggedIn = false;
         this.isAdmin = false;
 
-        this.authEventEmitter.emit({
+        this.authEventSubjNext();
+    }
+
+    private authEventSubjNext() {
+        this.authEvent$.next({
             isLoggedIn: this.isLoggedIn,
             isAdmin: this.isAdmin,
         });

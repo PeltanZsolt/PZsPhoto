@@ -1,6 +1,6 @@
 import { AfterContentInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { Subscription, forkJoin, switchMap, tap, concat } from 'rxjs';
+import { Subscription, forkJoin, switchMap, tap, concat, of } from 'rxjs';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from '../../../core/services/auth.service';
@@ -12,6 +12,7 @@ import { Photo } from '../../../core/models/photo.model';
 import { ErrorDialogData } from '../../../core/models/error.dialog.data.model';
 import { ErrordialogComponent } from '../../common/errordialog/errordialog.component';
 import { SuccessdialogComponent } from '../../common/successdialog/successdialog.component';
+import { SocketService } from 'src/app/core/services/socket.service';
 
 @Component({
     selector: 'app-carousel',
@@ -42,7 +43,8 @@ export class CarouselComponent implements OnInit, AfterContentInit, OnDestroy {
         private commentService: CommentService,
         private dialog: MatDialog,
         private authService: AuthService,
-        private viewsService: ViewsService
+        private viewsService: ViewsService,
+        private socketService: SocketService
     ) {}
 
     ngOnInit(): void {
@@ -79,6 +81,25 @@ export class CarouselComponent implements OnInit, AfterContentInit, OnDestroy {
         });
 
         this.isLoggedIn = this.authService.getAuthVariables().isLoggedIn;
+
+        this.subscriptions.push(
+            this.socketService.socketEventEmitter.subscribe((event) => {
+                console.log('event received:', event)
+                if (
+                    event.messageSubject === 'New comment posted' &&
+                    event.newComment.photoId === Number(this.id)
+                ) {
+                    const newComment = {
+                        photoId: this.id,
+                        user: event.newComment.user,
+                        commentText: event.newComment.commentText,
+                        rating: Number(event.newComment.rating),
+                        viewsNr: event.newComment.viewsNr,
+                    };
+                    this.comments.unshift(newComment);
+                }
+            })
+        );
     }
 
     getPhotoBlob(res0: any) {

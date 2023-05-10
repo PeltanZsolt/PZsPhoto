@@ -47,6 +47,7 @@ import { PhotoService } from './core/services/photo.service';
 import { ViewsService } from './core/services/views.services';
 import { CommentService } from './core/services/comment.service';
 import { JwtInterceptorService } from './core/services/jwt-interceptor.service';
+import { SocketService } from './core/services/socket.service';
 
 @NgModule({
     declarations: [
@@ -96,6 +97,7 @@ import { JwtInterceptorService } from './core/services/jwt-interceptor.service';
         AuthService,
         ViewsService,
         AuthGuardService,
+        SocketService,
         {
             provide: HTTP_INTERCEPTORS,
             useClass: JwtInterceptorService,
