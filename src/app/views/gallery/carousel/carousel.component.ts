@@ -2,7 +2,7 @@ import { AfterContentInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subscription, forkJoin, switchMap, tap, concat, of } from 'rxjs';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { AuthService } from '../../../core/services/auth.service';
 import { PhotoService } from '../../../core/services/photo.service';
 import { CommentService } from '../../../core/services/comment.service';

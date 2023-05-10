@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ErrordialogComponent } from '../errordialog/errordialog.component';
 import { ErrorDialogData } from 'src/app/core/models/error.dialog.data.model';
 import { Router } from '@angular/router';

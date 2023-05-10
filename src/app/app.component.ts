@@ -1,6 +1,6 @@
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { VisitorsService } from './core/services/visitors.services';
 import { AuthService } from './core/services/auth.service';
 import { LogoutdialogComponent } from './views/common/closedialog/logoutdialog.component';

@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { Photo } from '../../../../core/models/photo.model';
 import { PhotoService } from '../../../../core/services/photo.service';
 import { InputDialogData } from '../../../../core/models/input.dialog.data.model';
