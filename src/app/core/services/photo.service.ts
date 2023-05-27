@@ -86,7 +86,7 @@ export class PhotoService {
             );
     }
 
-    getHeroPhotoByCategory(category: string): Observable<ArrayBuffer> {
+    getHeroPhotoByCategory(category: string): Observable<any> {
         const url = this.url + '/getHeroPhotoByCategory';
         const headers = new HttpHeaders();
         const params = new HttpParams().set('category', category);

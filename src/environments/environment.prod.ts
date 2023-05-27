@@ -1,4 +1,4 @@
 export const environment = {
     production: true,
-    apiUrl: 'https://pzsphoto-nodejs.herokuapp.com/',
+    apiUrl: 'http://3.249.111.135:3000',
 };

@@ -35,12 +35,10 @@ export class HomeComponent implements OnInit, OnDestroy {
                     }),
                     map((res: any) => {
                         for (let i = 0; i < this.categories.length; i++) {
-                            const blob = res[i] as Blob;
+                            const blob = new Blob([res[i]], { type: 'image/jpeg' });
                             const reader = new FileReader();
                             reader.onload = () => {
-                                if (res[i].type === 'image/jpeg') {
-                                    this.heroesArray[i] = reader.result;
-                                }
+                                    this.heroesArray[i] = reader.result?.toString();
                             };
                             reader.readAsDataURL(blob);
                         }

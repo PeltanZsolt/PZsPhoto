@@ -1,6 +1,8 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { io } from 'socket.io-client';
 import { AuthService } from './auth.service';
+import { environment } from '../../../environments/environment';
+
 
 @Injectable({
     providedIn: 'root',
@@ -11,12 +13,11 @@ export class SocketService {
     private id: string;
 
     constructor(private authService: AuthService) {
-        this.socket = io('http://localhost:3000');
+        this.socket = io(environment.apiUrl);
     }
 
     initSocket() {
         this.socket.on('connect', () => {
-            // console.log('id:=', this.socket.id);
             this.id = this.socket.id;
         });
         this.socket.on('message', (message: string) => {
