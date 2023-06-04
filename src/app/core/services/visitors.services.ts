@@ -41,4 +41,10 @@ export class VisitorsService {
         );
         return of();
     }
+
+
+
+    getHostIP() {
+        return this.http.get('getHostIp')
+    }
 }

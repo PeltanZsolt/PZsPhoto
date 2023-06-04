@@ -26,12 +26,34 @@
                     </div>
                 </div>
             </div>
+            <div class="menu-bar" *ngIf="!isLoggedIn">|</div>
+            <mat-icon *ngIf="!isLoggedIn" id="user-account" class="material-symbols-outlined" >
+                account_circle
+            </mat-icon>
         </div>
         <div id="mobile-menu">
             <span> </span>
             <span> </span>
             <span> </span>
         </div>
+        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu" id="mobile-menu">
+            <mat-icon>menu</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item>
+                <mat-icon>dialpad</mat-icon>
+                <span>Redial</span>
+            </button>
+            <button mat-menu-item disabled>
+                <mat-icon>voicemail</mat-icon>
+                <span>Check voice mail</span>
+            </button>
+            <button mat-menu-item>
+                <mat-icon>notifications_off</mat-icon>
+                <span>Disable alerts</span>
+            </button>
+        </mat-menu>
+
     </div>
 </header>
 <router-outlet></router-outlet>

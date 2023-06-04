@@ -5,6 +5,7 @@ import { VisitorsService } from './core/services/visitors.services';
 import { AuthService } from './core/services/auth.service';
 import { LogoutdialogComponent } from './views/common/closedialog/logoutdialog.component';
 import { SocketService } from './core/services/socket.service';
+import { SuccessdialogComponent } from './views/common/successdialog/successdialog.component';
 
 @Component({
     selector: 'app-root',
@@ -37,11 +38,20 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        window.addEventListener('beforeunload', function (event) {
-            var confirmationMessage = 'o/';
-            event.returnValue = confirmationMessage;
-            return confirmationMessage;
-        });
+        // window.addEventListener('beforeunload', function (event) {
+        //     var confirmationMessage = 'o/';
+        //     event.returnValue = confirmationMessage;
+        //     return confirmationMessage;
+        // });
+        window.addEventListener('keypress', (event) => {console.log(event)
+        if (event.code === "KeyR") {
+            let hostIpAddress = 'noIpAddressYet';
+            this.visitorsService.getHostIP().subscribe(res => {
+                console.log('host ip: ', res)
+                const data = {message: 'no ip address yet', duration: 2000}
+                this.dialog.open(SuccessdialogComponent, {data});
+            })
+        }})
 
         this.subscriptions.push(
             this.visitorsService.getVisitorsNumber().subscribe((res) => {
