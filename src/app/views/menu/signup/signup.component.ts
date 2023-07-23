@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subscription, debounceTime, tap, startWith } from 'rxjs';
 import { Router } from '@angular/router';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { User } from '../../../core/models/user.model';
 import { UserService } from '../../../core/services/user.service';
 import { ErrorDialogData } from '../../../core/models/error.dialog.data.model';
@@ -10,6 +10,7 @@ import { ErrordialogComponent } from '../../common/errordialog/errordialog.compo
 import { SuccessDialogData } from '../../../core/models/success.dialog.data.model';
 import { SuccessdialogComponent } from '../../common/successdialog/successdialog.component';
 import { AuthService } from '../../../core/services/auth.service';
+import { DialogRef } from '@angular/cdk/dialog';
 
 @Component({
     selector: 'app-signup',
@@ -23,15 +24,15 @@ export class SignupComponent implements OnInit {
     passwordVerify: string;
     user: User;
     generatedPassword: string;
-    hide=false;
+    hide = false;
 
     subscriptions: Subscription[] = [];
 
     constructor(
         private userService: UserService,
         private dialog: MatDialog,
-        private router: Router,
-        private authService: AuthService
+        private authService: AuthService,
+        private dialogRef: DialogRef
     ) {}
 
     ngOnInit(): void {
@@ -136,10 +137,15 @@ export class SignupComponent implements OnInit {
                         data: data,
                     });
                 }
-                this.authService.setAuthVariables(this.username, res.jwtToken, true, false);
                 setTimeout(() => {
-                    this.router.navigate(['']);
+                    this.dialogRef.close();
                 }, 2000);
+                this.authService.setAuthVariables(
+                    this.username,
+                    res.jwtToken,
+                    true,
+                    false
+                );
         }
     }
 }

@@ -3,10 +3,10 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false,
-//   apiUrl: 'http://3.249.111.135:3000',
-  apiUrl: 'http://54.246.232.132:3000',
-//   apiUrl: 'http://localhost:3000',
+    production: false,
+    // apiUrl: 'http://54.246.234.233:3000',
+      apiUrl: 'http://localhost:3000',
+    version: require('../../package.json').version,
 };
 
 /*

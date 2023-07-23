@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ClosedialogComponent } from './logoutdialog.component';
+import { LogoutComponent } from './logout.component';
 
 describe('ClosedialogComponent', () => {
-  let component: ClosedialogComponent;
-  let fixture: ComponentFixture<ClosedialogComponent>;
+  let component: LogoutComponent;
+  let fixture: ComponentFixture<LogoutComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ClosedialogComponent ]
+      declarations: [ LogoutComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ClosedialogComponent);
+    fixture = TestBed.createComponent(LogoutComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

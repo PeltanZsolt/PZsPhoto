@@ -9,14 +9,14 @@
         <p id="filename" appearance="standard">File selected: {{selectedFile.name? selectedFile.name : 'No file selected'}}
         </p>
 
-        <mat-form-field appearance="standard">
+        <mat-form-field appearance="fill">
             <mat-label>Title</mat-label>
             <input matInput maxlength="50" inputmode="full-width-latin" placeholder="Type the photo's title"
                 formControlName="title">
             <mat-error>Title is required.</mat-error>
         </mat-form-field>
 
-        <mat-form-field appearance="standard">
+        <mat-form-field appearance="fill">
             <mat-label>Select a category</mat-label>
             <mat-select matNativeControl name="category" formControlName="category">
                 <mat-option *ngFor="let category of categories" [value]="category">{{category}}</mat-option>
@@ -24,12 +24,12 @@
             </mat-select>
         </mat-form-field>
 
-        <mat-form-field appearance="standard">
+        <mat-form-field appearance="fill">
             <mat-label>Description:</mat-label>
             <textarea matInput placeholder="description" formControlName="description" rows="4"></textarea>
         </mat-form-field>
 
-        <mat-form-field appearance="standard">
+        <mat-form-field appearance="fill">
             <mat-label>Year of capture:</mat-label>
             <mat-select matNativeControl formControlName="year" placeholder="Year of capture">
                 <mat-option>---</mat-option>
@@ -37,7 +37,7 @@
             </mat-select>
         </mat-form-field>
 
-        <mat-form-field appearance="standard">
+        <mat-form-field appearance="fill">
             <mat-label>Place</mat-label>
             <input matInput maxlenght="30" inputmode="full-width-latin" placeholder="Type the place of capture"
                 formControlName="place">

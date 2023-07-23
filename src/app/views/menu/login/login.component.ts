@@ -1,8 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subscription, tap } from 'rxjs';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
-import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
 import { User } from '../../../core/models/user.model';
 import { UserService } from '../../../core/services/user.service';
 import { AuthService } from '../../../core/services/auth.service';
@@ -10,6 +9,7 @@ import { ErrorDialogData } from '../../../core/models/error.dialog.data.model';
 import { ErrordialogComponent } from '../../common/errordialog/errordialog.component';
 import { SuccessDialogData } from '../../../core/models/success.dialog.data.model';
 import { SuccessdialogComponent } from '../../common/successdialog/successdialog.component';
+import { DialogRef } from '@angular/cdk/dialog';
 
 @Component({
     selector: 'app-login',
@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     constructor(
         private userService: UserService,
         private dialog: MatDialog,
-        private router: Router,
+        private dialogRef: DialogRef,
         private authService: AuthService
     ) {}
 
@@ -51,7 +51,6 @@ export class LoginComponent implements OnInit, OnDestroy {
                     tap((res) => {
                         this.handleLoginResponse(res);
                     })
-
                 )
                 .subscribe()
         );
@@ -89,13 +88,14 @@ export class LoginComponent implements OnInit, OnDestroy {
                 this.dialog.open(SuccessdialogComponent, {
                     data: data,
                 });
+
                 this.authService.setAuthVariables(
                     this.username,
                     res.jwtToken,
                     true,
                     res.isAdmin
                 );
-                setTimeout(() => this.router.navigate(['']), 1500);
+                setTimeout(() => this.dialogRef.close(), 2000);
                 break;
             }
             default: {

@@ -1,14 +1,14 @@
 <div class="file-upload">
-    <form [formGroup]="formGroup">
-        <h1>LOG IN</h1>
-        <mat-form-field appearance="standard">
+    <h1 mat-dialog-title>LOG IN</h1>
+    <form [formGroup]="formGroup" mat-dialog-content>
+        <mat-form-field appearance="fill" >
             <mat-label>User name</mat-label>
             <input matInput maxlength="50" inputmode="full-width-latin" placeholder="User name or email address"
                 formControlName="username">
             <mat-error>Username is required.</mat-error>
         </mat-form-field>
 
-        <mat-form-field appearance="standard">
+        <mat-form-field appearance="fill">
             <mat-label>Password:</mat-label>
             <input matInput placeholder="Input password"
                 formControlName="password" type="password">
@@ -19,6 +19,5 @@
             <button mat-raised-button color="primary" type="submit" [disabled]="!formGroup.valid"
                 (click)="onLogin()">Submit</button>
         </div>
-
     </form>
 </div>

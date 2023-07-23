@@ -1,18 +1,18 @@
 <div class="file-upload">
+    <h1 mat-dialog-title>SIGN-UP</h1>
     <form [formGroup]="formGroup">
-        <h1>SIGN-UP</h1>
-        <mat-form-field appearance="standard">
+        <mat-form-field appearance="fill">
             <mat-label>User name</mat-label>
             <input matInput maxlength="50" inputmode="full-width-latin" placeholder="User name or email address"
                 formControlName="username">
             <mat-error>Username is required.</mat-error>
         </mat-form-field>
 
-        <mat-form-field appearance="standard">
+        <mat-form-field appearance="fill">
             <mat-label>Password:</mat-label>
-            <input [type]="hide ? 'password' : 'text'" matInput maxlenght="30" minlength="3" placeholder="Input a strong password"
-                formControlName="password" [matAutocomplete]="autoPassword">
-                <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            <input [type]="hide ? 'password' : 'text'" matInput maxlenght="30" minlength="3"
+                placeholder="Input a strong password" formControlName="password" [matAutocomplete]="autoPassword">
+            <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
             <mat-autocomplete #autoPassword="matAutocomplete">
                 <mat-option [value]="generatedPassword" (click)="onClickGeneratedPassword($event)">
                     {{generatedPassword}}
@@ -23,7 +23,7 @@
                 special characters allowed.</mat-error>
         </mat-form-field>
 
-        <mat-form-field appearance="standard">
+        <mat-form-field appearance="fill">
             <mat-label>Confirm password:</mat-label>
             <input type="password" matInput maxlenght="30" minlength="3" placeholder="Type password again"
                 formControlName="passwordVerify">

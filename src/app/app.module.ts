@@ -8,28 +8,29 @@ import {
     HTTP_INTERCEPTORS,
 } from '@angular/common/http';
 
-import { MatLegacyFormFieldModule as MatFormFieldModule } from '@angular/material/legacy-form-field';
-import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
-// import { MatIconModule } from '@angular/material/icon';
-import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
-import { MatLegacyRadioModule as MatRadioModule } from '@angular/material/legacy-radio';
-// import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatRadioModule } from '@angular/material/radio';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-import { MatLegacyDialogModule as MatDialogModule } from '@angular/material/legacy-dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
-import { MatLegacyAutocompleteModule as MatAutocompleteModule } from '@angular/material/legacy-autocomplete';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import {MatIconModule} from '@angular/material/icon';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatButtonModule} from '@angular/material/button';
+import {MatToolbarModule} from '@angular/material/toolbar'
+import {MatDividerModule} from '@angular/material/divider';
+
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './views/home/home.component';
 import { LoginComponent } from './views/menu/login/login.component';
 import { SignupComponent } from './views/menu/signup/signup.component';
 import { ContactComponent } from './views/menu/contact/contact.component';
-import { LogoutdialogComponent } from './views/common/closedialog/logoutdialog.component';
+import { LogoutComponent } from './views/menu/logout/logout.component';
 import { UploadComponent } from './views/menu/admin/upload/upload.component';
 import { StatisticsComponent } from './views/menu/admin/statistics/statistics.component';
 import { UsersComponent } from './views/menu/admin/users/users.component';
@@ -51,6 +52,7 @@ import { ViewsService } from './core/services/views.services';
 import { CommentService } from './core/services/comment.service';
 import { JwtInterceptorService } from './core/services/jwt-interceptor.service';
 import { SocketService } from './core/services/socket.service';
+import { LegalComponent } from './views/menu/legal/legal.component';
 
 @NgModule({
     declarations: [
@@ -66,11 +68,12 @@ import { SocketService } from './core/services/socket.service';
         SignupComponent,
         UsersComponent,
         StatisticsComponent,
-        LogoutdialogComponent,
+        LogoutComponent,
         ErrordialogComponent,
         SuccessdialogComponent,
         Error404Component,
         InputdialogComponent,
+        LegalComponent,
     ],
     imports: [
         BrowserModule,
@@ -92,6 +95,8 @@ import { SocketService } from './core/services/socket.service';
         MatTooltipModule,
         MatAutocompleteModule,
         MatMenuModule,
+        MatToolbarModule,
+        MatDividerModule
     ],
     providers: [
         VisitorsService,

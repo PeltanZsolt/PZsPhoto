@@ -1,60 +1,28 @@
 <header>
-    <div id="header-bar">
+    <mat-toolbar id="header-bar">
         <div id="pzsphoto-logo">
             <img src="../assets/logo/pzs photo logo.svg" alt="PZS Photo logo" height="60" routerLink="/" />
         </div>
         <div id="full-menu">
-            <div class="menu-item" routerLink="login" *ngIf="!isLoggedIn
-            ">Login</div>
-            <div class="menu-bar" *ngIf="!isLoggedIn
-            ">|</div>
-            <div class="menu-item" (click)="openLogoutDialog()" *ngIf="isLoggedIn">Logout</div>
-            <div class="menu-bar" *ngIf="isLoggedIn
-            ">|</div>
-            <div class="menu-item" routerLink="signup" *ngIf="!isLoggedIn">Sign-up</div>
-            <div class="menu-bar" *ngIf="!isLoggedIn
-            ">|</div>
-            <div class="menu-item" routerLink="contact">Contact</div>
-            <div class="menu-bar" *ngIf="isAdmin">|</div>
-            <div class="menu-item" *ngIf="isAdmin">
-                Admin
-                <div class="dropdown">
-                    <div class="dropdown-content">
-                        <a routerLink="upload">Upload Photos</a>
-                        <a routerLink="users">Users</a>
-                        <a routerLink="statistics">Statistics</a>
-                    </div>
+            <ng-container *ngFor="let item of menuItems">
+                <div class="menu-item" *ngIf="item.cond">
+                    <button mat-button (click)="handleMenuItemClick(item.action, item.route)">{{item.name}}</button>
+                    <mat-divider vertical="true"></mat-divider>
                 </div>
-            </div>
-            <div class="menu-bar" *ngIf="!isLoggedIn">|</div>
-            <mat-icon *ngIf="!isLoggedIn" id="user-account" class="material-symbols-outlined" >
-                account_circle
-            </mat-icon>
+            </ng-container>
         </div>
         <div id="mobile-menu">
-            <span> </span>
-            <span> </span>
-            <span> </span>
+            <button mat-icon-button [matMenuTriggerFor]="mobilemenu">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <mat-menu #mobilemenu="matMenu">
+                <ng-container *ngFor="let item of menuItems">
+                    <button *ngIf="item.cond" mat-menu-item
+                        (click)="handleMenuItemClick(item.action, item.route)">{{item.name}}</button>
+                </ng-container>
+            </mat-menu>
         </div>
-        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu" id="mobile-menu">
-            <mat-icon>menu</mat-icon>
-        </button>
-        <mat-menu #menu="matMenu">
-            <button mat-menu-item>
-                <mat-icon>dialpad</mat-icon>
-                <span>Redial</span>
-            </button>
-            <button mat-menu-item disabled>
-                <mat-icon>voicemail</mat-icon>
-                <span>Check voice mail</span>
-            </button>
-            <button mat-menu-item>
-                <mat-icon>notifications_off</mat-icon>
-                <span>Disable alerts</span>
-            </button>
-        </mat-menu>
-
-    </div>
+    </mat-toolbar>
 </header>
 <router-outlet></router-outlet>
 <footer id="footer">
@@ -63,11 +31,12 @@
             Back to top
         </button>
         <div>
-            <p>(c) Copyright 2023 Peltan Zsolt</p>
+            <p>(c) Copyright 2023 Peltan Zsolt. Photos by Peltan Zsolt <br> Version: {{version}}. Currently there are
+                {{connectedClients}} user(s) viewing this site. </p>
         </div>
     </div>
     <div id="footer-right">
-        <div>Number of visitors:</div>
+        <div>Total number of visitors:</div>
         <div>{{ visitorsNr }}</div>
     </div>
 </footer>

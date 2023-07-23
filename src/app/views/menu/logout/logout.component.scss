@@ -1,19 +1,21 @@
 $error-color: #97001c;
+$color-menu-text: #444444;
 
-.errordialog-wrapper {
+.logoutdialog-wrapper {
     text-align: center;
     h1 {
         margin: auto;
         color: white;
         background-color: $error-color;
     }
-    p {
-        margin: 1rem auto 0 auto;
-    }
     div {
+        align-content: center;
         button {
             margin: auto;
             color: white;
+            background-color: $color-menu-text;
+        }
+        #logout {
             background-color: $error-color;
         }
     }

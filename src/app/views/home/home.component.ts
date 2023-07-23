@@ -1,6 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subscription, forkJoin, map, switchMap, tap } from 'rxjs';
 import { PhotoService } from '../../core/services/photo.service';
+import { MatDialog } from '@angular/material/dialog';
+import { Error404Component } from '../common/error404/error404.component';
 
 @Component({
     selector: 'app-home',
@@ -13,7 +15,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     categories: string[] = [];
     heroesArray: any[] = [];
 
-    constructor(private photoService: PhotoService) {}
+    constructor(private photoService: PhotoService, private dialog: MatDialog) {}
 
     ngOnInit(): void {
         this.subscriptions.push(
@@ -21,6 +23,10 @@ export class HomeComponent implements OnInit, OnDestroy {
                 .getCategoriesPartialList()
                 .pipe(
                     tap((res) => {
+                        if (res.error) {
+                            this.dialog.open(Error404Component)
+                            return
+                        }
                         this.categories = res;
                     }),
                     switchMap(() => {

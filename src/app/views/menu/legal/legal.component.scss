@@ -1,0 +1,20 @@
+$color-lightgrey: #d4d4d4;
+$color-menu-text: #444444;
+$color-dark-background: rgb(32, 32, 32);
+
+div {
+    margin:  auto;
+    color: $color-menu-text;
+    font-size: large;
+    max-width:60rem;
+}
+h1 {
+    margin-top: 1rem;
+    text-align: center;
+    color: $color-menu-text;
+    background-color: $color-lightgrey;
+}
+h2 {
+    margin-top: 1rem;
+    margin-bottom: 0;
+}

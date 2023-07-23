@@ -1,16 +1,31 @@
 $color-menu-text: #444444;
+$color-lightgrey: #d4d4d4;
+
+// $color-menu-text: #c53434;
 .dialog-wrapper {
     text-align: center;
-    p {
+    width: 16rem;
+    h1 {
+        // all: unset;
         margin: auto;
+        // color: $color-menu-text;
+        // background-color: $color-lightgrey;
         color: $color-menu-text;
+        background-color: $color-lightgrey;
+
+        // width: 100%;
+        // padding: 5px;
     }
-    button {
-        margin: auto;
-        color: $color-menu-text;
-        background-color: inherit;
+    div {
+        button {
+            margin: auto;
+            color: $color-menu-text;
+            background-color: inherit;
+            margin: 1rem auto 1rem auto;
+        }
     }
 }
-::ng-deep .mat-dialog-container {
-    background-color: white;
-}
+// ::ng-deep mat-dialog-container {
+//     background-color: white;
+//     width: 60%;
+// }

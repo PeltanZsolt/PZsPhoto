@@ -2,7 +2,7 @@ import { AfterContentInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subscription, forkJoin, switchMap, tap, concat, of } from 'rxjs';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from '../../../core/services/auth.service';
 import { PhotoService } from '../../../core/services/photo.service';
 import { CommentService } from '../../../core/services/comment.service';
@@ -80,21 +80,21 @@ export class CarouselComponent implements OnInit, AfterContentInit, OnDestroy {
             ),
         });
 
-        this.isLoggedIn = this.authService.getAuthVariables().isLoggedIn;
+        this.subscriptions.push(
+            this.authService.authEvent$.subscribe(event => {
+                this.isLoggedIn = event.isLoggedIn
+            })
+        )
 
         this.subscriptions.push(
-            this.socketService.socketEventEmitter.subscribe((event) => {
-                console.log('event received:', event)
-                if (
-                    event.messageSubject === 'New comment posted' &&
-                    event.newComment.photoId === Number(this.id)
-                ) {
+            this.socketService.socketCommentEvent.subscribe((event) => {
+                if (event.photoId === Number(this.id)) {
                     const newComment = {
                         photoId: this.id,
-                        user: event.newComment.user,
-                        commentText: event.newComment.commentText,
-                        rating: Number(event.newComment.rating),
-                        viewsNr: event.newComment.viewsNr,
+                        user: event.user,
+                        commentText: event.commentText,
+                        rating: Number(event.rating),
+                        viewsNr: event.viewsNr,
                     };
                     this.comments.unshift(newComment);
                 }
@@ -128,11 +128,11 @@ export class CarouselComponent implements OnInit, AfterContentInit, OnDestroy {
     }
 
     listenToKeys = (event: KeyboardEvent) => {
-        this.handleNavigation(event.code);
+        this.handleArrowNavigation(event.code);
     };
 
     onArrowClick(event: string) {
-        this.handleNavigation(event);
+        this.handleArrowNavigation(event);
     }
 
     resizeElements() {
@@ -143,7 +143,7 @@ export class CarouselComponent implements OnInit, AfterContentInit, OnDestroy {
         }
     }
 
-    handleNavigation(event: string) {
+    handleArrowNavigation(event: string) {
         switch (event) {
             case 'Enter':
             case 'NumpadEnter':

@@ -11,12 +11,15 @@ import { CarouselComponent } from './views/gallery/carousel/carousel.component';
 import { GalleryComponent } from './views/gallery/gallery.component';
 import { Error404Component } from './views/common/error404/error404.component';
 import { AuthGuardService } from './core/services/auth-guard.service';
+import { LegalComponent } from './views/menu/legal/legal.component';
 
 const appRouting: Routes = [
   { path: '', pathMatch: 'full', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
   { path: 'contact', component: ContactComponent },
+  { path: 'legal', component: LegalComponent },
+  { path: 'admin', component: UploadComponent, canActivate:[AuthGuardService] },
   { path: 'upload', component: UploadComponent, canActivate:[AuthGuardService] },
   { path: 'users', component: UsersComponent, canActivate:[AuthGuardService] },
   { path: 'statistics', component: StatisticsComponent, canActivate:[AuthGuardService] },

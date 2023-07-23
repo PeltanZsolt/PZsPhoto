@@ -140,3 +140,21 @@ $color-dark-background: rgb(32, 32, 32);
         }
     }
 }
+
+@media (max-width: 75rem) {
+    #carousel {
+        flex-direction: column;
+        #attributes {
+            padding-left: 9px;
+            width: 90%;
+            margin-left: 10px;
+            #comments-body {
+                display: block;
+                width: 90%;
+                form {
+                    width: 90%;
+                }
+            }
+        }
+    }
+}

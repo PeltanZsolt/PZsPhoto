@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { Photo } from '../../core/models/photo.model';
 import { PhotoService } from '../../core/services/photo.service';
 import { ErrorDialogData } from '../../core/models/error.dialog.data.model';
