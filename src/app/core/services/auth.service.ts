@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { AuthState } from '../models/auth-state.model';
+import { AuthVariables } from '../models/auth-variables.model';
 
 @Injectable({
     providedIn: 'root',
@@ -11,9 +11,10 @@ export class AuthService {
     private jwtToken = '';
     private isAdmin = false;
 
-    public authEvent$ = new BehaviorSubject<AuthState>({
+    public authEvent$ = new BehaviorSubject<AuthVariables>({
         isLoggedIn: false,
         isAdmin: false,
+        username: '',
     });
 
     getJwtToken(): string {
@@ -56,6 +57,7 @@ export class AuthService {
         this.authEvent$.next({
             isLoggedIn: this.isLoggedIn,
             isAdmin: this.isAdmin,
+            username: this.username,
         });
     }
 }

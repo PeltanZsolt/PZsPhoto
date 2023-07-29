@@ -3,9 +3,12 @@
         <div id="pzsphoto-logo">
             <img src="../assets/logo/pzs photo logo.svg" alt="PZS Photo logo" height="60" routerLink="/" />
         </div>
+        <p *ngIf="(userState$ | async)?.username">
+            Welcome, {{(userState$ | async)!.username}}!
+        </p>
         <div id="full-menu">
             <ng-container *ngFor="let item of menuItems">
-                <div class="menu-item" *ngIf="item.cond">
+                <div class="menu-item" *ngIf="item.cond$ | async">
                     <button mat-button (click)="handleMenuItemClick(item.action, item.route)">{{item.name}}</button>
                     <mat-divider vertical="true"></mat-divider>
                 </div>
@@ -17,7 +20,7 @@
             </button>
             <mat-menu #mobilemenu="matMenu">
                 <ng-container *ngFor="let item of menuItems">
-                    <button *ngIf="item.cond" mat-menu-item
+                    <button *ngIf="item.cond$ | async" mat-menu-item
                         (click)="handleMenuItemClick(item.action, item.route)">{{item.name}}</button>
                 </ng-container>
             </mat-menu>
@@ -32,11 +35,11 @@
         </button>
         <div>
             <p>(c) Copyright 2023 Peltan Zsolt. Photos by Peltan Zsolt <br> Version: {{version}}. Currently there are
-                {{connectedClients}} user(s) viewing this site. </p>
+                {{connectedClientsCount}} user(s) viewing this site. </p>
         </div>
     </div>
     <div id="footer-right">
         <div>Total number of visitors:</div>
-        <div>{{ visitorsNr }}</div>
+        <div>{{ visitorsCount }}</div>
     </div>
 </footer>

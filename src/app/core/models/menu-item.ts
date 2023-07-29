@@ -1,8 +1,10 @@
+import { Observable } from 'rxjs';
+
 export class MenuItem {
     constructor(
         public name: string,
-        public cond: boolean,
+        public cond$: Observable<boolean>,
         public action: string,
-        public route: string,
+        public route: string
     ) {}
 }

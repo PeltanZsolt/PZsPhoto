@@ -1,5 +1,5 @@
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription, map, of } from 'rxjs';
 import { Router } from '@angular/router';
 import { environment } from '../environments/environment';
 import { MenuItem } from './core/models/menu-item';
@@ -10,6 +10,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { LogoutComponent } from './views/menu/logout/logout.component';
 import { LoginComponent } from './views/menu/login/login.component';
 import { SignupComponent } from './views/menu/signup/signup.component';
+import { Store, createFeatureSelector } from '@ngrx/store';
+import { User } from './core/models/user.model';
+import { AuthState } from './core/auth.store/auth.reducer';
 
 @Component({
     selector: 'app-root',
@@ -18,21 +21,18 @@ import { SignupComponent } from './views/menu/signup/signup.component';
 })
 export class AppComponent implements OnInit, OnDestroy {
     version = environment.version;
-    visitorsNr = 0;
+    visitorsCount = 0;
     windowScrolled = false;
-    connectedClients = 1;
+    connectedClientsCount = 1;
 
-    isAdmin = false;
-    isLoggedIn = false;
-    menuItems: MenuItem[] = [
-        new MenuItem('Login', !this.isLoggedIn, 'openDialog', 'login'),
-        new MenuItem('Sign Up', !this.isLoggedIn, 'openDialog', 'signup'),
-        new MenuItem('Logout', this.isLoggedIn, 'openDialog', 'logout'),
-        new MenuItem('Contact', true, 'navigate', '/contact'),
-        new MenuItem('Legal', true, 'navigate', '/legal'),
-        new MenuItem('Admin', !this.isAdmin, 'navigate', '/admin'),
-    ];
-
+    // isAdmin = false;
+    // isLoggedIn = false;
+    // username = '';
+    // username$: any;
+    // user: any;
+    // state$: any;
+    userState$: Observable<User>;
+    menuItems: MenuItem[] = [];
 
     subscriptions: Subscription[] = [];
 
@@ -41,7 +41,8 @@ export class AppComponent implements OnInit, OnDestroy {
         public dialog: MatDialog,
         private authService: AuthService,
         private socketService: SocketService,
-        private router: Router
+        private router: Router,
+        private store: Store<AuthState>
     ) {}
 
     @HostListener('window:scroll', [])
@@ -53,43 +54,67 @@ export class AppComponent implements OnInit, OnDestroy {
         }
     }
 
-
     ngOnInit() {
-        window.addEventListener('beforeunload', function (event) {
-            var confirmationMessage = 'o/';
-            event.returnValue = confirmationMessage;
-            return confirmationMessage;
-        });
+        // window.addEventListener('beforeunload', function (event) {
+        //     var confirmationMessage = 'o/';
+        //     event.returnValue = confirmationMessage;
+        //     return confirmationMessage;
+        // });
 
         this.subscriptions.push(
             this.visitorsService.getVisitorsNumber().subscribe((res) => {
-                this.visitorsNr = res.visitorsCount;
+                this.visitorsCount = res.visitorsCount;
             })
         );
 
-        this.subscriptions.push(
-            this.authService.authEvent$.subscribe((res) => {
-                this.isLoggedIn = res.isLoggedIn;
-                this.isAdmin = res.isAdmin;
-                this.updateMenuItems(res);
-            })
-        );
+        this.userState$ = this.store
+            .select(createFeatureSelector<AuthState>('auth'))
+            .pipe(map((state) => state.user));
+
+        this.menuItems = [
+            new MenuItem(
+                'Login',
+                this.userState$.pipe(map((state) => !state.username)),
+                'openDialog',
+                'login'
+            ),
+            new MenuItem(
+                'Sign Up',
+                this.userState$.pipe(map((state) => !state.username)),
+                'openDialog',
+                'signup'
+            ),
+            new MenuItem(
+                'Logout',
+                this.userState$.pipe(map((state) => !!state.username)),
+                'openDialog',
+                'logout'
+            ),
+            new MenuItem('Contact', of(true), 'navigate', '/contact'),
+            new MenuItem('Legal', of(true), 'navigate', '/legal'),
+            new MenuItem(
+                'Admin',
+                this.userState$.pipe(map((state) => state.isAdmin!)),
+                'navigate',
+                '/admin'
+            ),
+        ];
 
         this.socketService.initSocket();
 
         this.subscriptions.push(
             this.socketService.socketClientsEvent.subscribe((res) => {
-                this.connectedClients = res;
+                this.connectedClientsCount = res;
             })
         );
     }
 
-    updateMenuItems(res: any) {
-        this.menuItems[0].cond = !res.isLoggedIn;
-        this.menuItems[1].cond = !res.isLoggedIn;
-        this.menuItems[2].cond = res.isLoggedIn;
-        this.menuItems[5].cond = res.isAdmin;
-    }
+    // updateMenuItems(res: any) {
+    //     this.menuItems[0].cond = !res.isLoggedIn;
+    //     this.menuItems[1].cond = !res.isLoggedIn;
+    //     this.menuItems[2].cond = res.isLoggedIn;
+    //     this.menuItems[5].cond = res.isAdmin;
+    // }
 
     onScrollToTop() {
         window.scrollTo(0, 0);

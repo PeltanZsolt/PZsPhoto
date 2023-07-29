@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Subscription, debounceTime, tap, startWith } from 'rxjs';
+import { Subscription, debounceTime, tap, startWith, map, of, takeUntil, exhaustMap } from 'rxjs';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { User } from '../../../core/models/user.model';
@@ -11,13 +11,16 @@ import { SuccessDialogData } from '../../../core/models/success.dialog.data.mode
 import { SuccessdialogComponent } from '../../common/successdialog/successdialog.component';
 import { AuthService } from '../../../core/services/auth.service';
 import { DialogRef } from '@angular/cdk/dialog';
+import { Store, createFeatureSelector } from '@ngrx/store';
+import { AuthState } from 'src/app/core/auth.store/auth.reducer';
+import * as AuthActions from '../../../core/auth.store/auth.actions';
 
 @Component({
     selector: 'app-signup',
     templateUrl: './signup.component.html',
     styleUrls: ['./signup.component.scss'],
 })
-export class SignupComponent implements OnInit {
+export class SignupComponent implements OnInit, OnDestroy {
     formGroup: FormGroup;
     username: string;
     password: string;
@@ -32,7 +35,8 @@ export class SignupComponent implements OnInit {
         private userService: UserService,
         private dialog: MatDialog,
         private authService: AuthService,
-        private dialogRef: DialogRef
+        private dialogRef: DialogRef,
+        private store: Store<AuthState>
     ) {}
 
     ngOnInit(): void {
@@ -61,6 +65,14 @@ export class SignupComponent implements OnInit {
                 .subscribe()
         );
         this.generatePassword();
+
+        this.subscriptions.push(
+            this.store
+                .select(createFeatureSelector('auth'))
+                .subscribe((state: any) => {
+                    this.handleSignupResponse(state.authErrorState);
+                })
+        );
     }
 
     generatePassword() {
@@ -86,9 +98,15 @@ export class SignupComponent implements OnInit {
             this.password.trim(),
             this.passwordVerify.trim()
         );
-        this.userService.signUp(this.user).subscribe((res) => {
-            this.handleSignupResponse(res);
-        });
+
+        const user = new User(
+            this.user.username,
+            this.user.password,
+            this.user.passwordVerify
+        );
+
+        this.store.dispatch(AuthActions.SignupStart({ user }));
+
     }
 
     handleSignupResponse(res: any): void {
@@ -140,12 +158,16 @@ export class SignupComponent implements OnInit {
                 setTimeout(() => {
                     this.dialogRef.close();
                 }, 2000);
-                this.authService.setAuthVariables(
-                    this.username,
-                    res.jwtToken,
-                    true,
-                    false
-                );
+                // this.authService.setAuthVariables(
+                //     this.username,
+                //     res.jwtToken,
+                //     true,
+                //     false
+                // );
         }
+    }
+
+    ngOnDestroy() {
+        this.subscriptions.forEach((sub) => sub.unsubscribe());
     }
 }

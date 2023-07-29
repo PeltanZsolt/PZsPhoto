@@ -54,6 +54,11 @@ import { JwtInterceptorService } from './core/services/jwt-interceptor.service';
 import { SocketService } from './core/services/socket.service';
 import { LegalComponent } from './views/menu/legal/legal.component';
 
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import {authReducer} from './core/auth.store/auth.reducer'
+import { AuthEffects } from './core/auth.store/auth.effects';
+
 @NgModule({
     declarations: [
         AppComponent,
@@ -96,7 +101,9 @@ import { LegalComponent } from './views/menu/legal/legal.component';
         MatAutocompleteModule,
         MatMenuModule,
         MatToolbarModule,
-        MatDividerModule
+        MatDividerModule,
+        StoreModule.forRoot({auth: authReducer},{}),
+        EffectsModule.forRoot([AuthEffects])
     ],
     providers: [
         VisitorsService,

@@ -2,6 +2,10 @@ import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
+import { Store, createFeatureSelector } from '@ngrx/store';
+import { AuthState } from 'src/app/core/auth.store/auth.reducer';
+import * as AuthActions from '../../../core/auth.store/auth.actions';
+import { map, take } from 'rxjs';
 
 @Component({
     selector: 'app-logoutdialog',
@@ -13,6 +17,7 @@ export class LogoutComponent {
         public dialogRef: MatDialogRef<LogoutComponent>,
         private router: Router,
         private authService: AuthService,
+        private store: Store<AuthState>,
         @Inject(MAT_DIALOG_DATA) public data: null
     ) {}
 
@@ -21,9 +26,16 @@ export class LogoutComponent {
     }
     onOkClick(): void {
         this.dialogRef.close();
-        if (this.authService.getAuthVariables().isAdmin) {
-            this.router.navigate(['/']);
-        }
-        this.authService.resetAuthVariables()
+
+        this.store
+        .select(createFeatureSelector<AuthState>('auth'))
+        .pipe(
+            take(1),
+            map((state) => {
+            if (state.user.isAdmin) {
+                this.router.navigate(['/']);
+            }
+            this.store.dispatch(AuthActions.Logout());
+        })).subscribe();
     }
 }
