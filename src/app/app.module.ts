@@ -22,8 +22,6 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatButtonModule} from '@angular/material/button';
 import {MatToolbarModule} from '@angular/material/toolbar'
-import {MatDividerModule} from '@angular/material/divider';
-
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './views/home/home.component';
@@ -44,7 +42,6 @@ import { ErrordialogComponent } from './views/common/errordialog/errordialog.com
 import { Error404Component } from './views/common/error404/error404.component';
 
 import { AuthGuardService } from './core/services/auth-guard.service';
-import { AuthService } from './core/services/auth.service';
 import { UserService } from './core/services/user.service';
 import { VisitorsService } from './core/services/visitors.services';
 import { PhotoService } from './core/services/photo.service';
@@ -54,7 +51,7 @@ import { JwtInterceptorService } from './core/services/jwt-interceptor.service';
 import { SocketService } from './core/services/socket.service';
 import { LegalComponent } from './views/menu/legal/legal.component';
 
-import { StoreModule } from '@ngrx/store';
+import { Store, StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import {authReducer} from './core/auth.store/auth.reducer'
 import { AuthEffects } from './core/auth.store/auth.effects';
@@ -73,7 +70,6 @@ import { AuthEffects } from './core/auth.store/auth.effects';
         SignupComponent,
         UsersComponent,
         StatisticsComponent,
-        LogoutComponent,
         ErrordialogComponent,
         SuccessdialogComponent,
         Error404Component,
@@ -101,7 +97,6 @@ import { AuthEffects } from './core/auth.store/auth.effects';
         MatAutocompleteModule,
         MatMenuModule,
         MatToolbarModule,
-        MatDividerModule,
         StoreModule.forRoot({auth: authReducer},{}),
         EffectsModule.forRoot([AuthEffects])
     ],
@@ -110,7 +105,6 @@ import { AuthEffects } from './core/auth.store/auth.effects';
         PhotoService,
         CommentService,
         UserService,
-        AuthService,
         ViewsService,
         AuthGuardService,
         SocketService,
@@ -118,7 +112,7 @@ import { AuthEffects } from './core/auth.store/auth.effects';
             provide: HTTP_INTERCEPTORS,
             useClass: JwtInterceptorService,
             multi: true,
-            deps: [AuthService],
+            deps: [Store],
         },
     ],
     bootstrap: [AppComponent],

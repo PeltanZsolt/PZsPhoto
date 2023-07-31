@@ -12,6 +12,11 @@ $color-menu-text: #444444;
     #pzsphoto-logo {
         margin: auto;
     }
+    #pzsphoto-logo:hover {
+        background-color: $color-menu-hover;
+        box-shadow: 0 0 5px 3px $color-menu-hover;
+        cursor: pointer;
+    }
     p {
         font-size: 1rem;
         margin: 0;
@@ -27,14 +32,16 @@ $color-menu-text: #444444;
         .menu-item {
             button {
                 padding: 0.5rem;
-                align-content: left;
+                align-content: center;
                 font-size: 1rem;
+                opacity: 80%;
             }
         }
         .menu-item:hover {
             button:hover {
                 background-color: $color-menu-hover;
                 cursor: pointer;
+                box-shadow: 0 0 5px 3px $color-menu-hover;
             }
         }
     }
@@ -61,7 +68,7 @@ footer {
     display: flex;
     justify-content: space-between;
     background-color: $color-lightgrey;
-    margin-top: .2rem;
+    margin-top: 0.2rem;
     align-items: center;
     #footer-center {
         margin: 0 auto;

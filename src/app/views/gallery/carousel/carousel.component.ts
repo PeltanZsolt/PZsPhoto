@@ -1,9 +1,9 @@
 import { AfterContentInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { Subscription, forkJoin, switchMap, tap, concat, of } from 'rxjs';
+import { Subscription, forkJoin, switchMap, tap, concat, of, map } from 'rxjs';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { AuthService } from '../../../core/services/auth.service';
+// import { AuthService } from '../../../core/services/auth.service.ts todelete';
 import { PhotoService } from '../../../core/services/photo.service';
 import { CommentService } from '../../../core/services/comment.service';
 import { ViewsService } from '../../../core/services/views.services';
@@ -13,6 +13,8 @@ import { ErrorDialogData } from '../../../core/models/error.dialog.data.model';
 import { ErrordialogComponent } from '../../common/errordialog/errordialog.component';
 import { SuccessdialogComponent } from '../../common/successdialog/successdialog.component';
 import { SocketService } from 'src/app/core/services/socket.service';
+import { Store, createFeatureSelector } from '@ngrx/store';
+import { AuthState } from 'src/app/core/auth.store/auth.reducer';
 
 @Component({
     selector: 'app-carousel',
@@ -42,7 +44,8 @@ export class CarouselComponent implements OnInit, AfterContentInit, OnDestroy {
         private photoService: PhotoService,
         private commentService: CommentService,
         private dialog: MatDialog,
-        private authService: AuthService,
+        // private authService: AuthService,
+        private store: Store<AuthState>,
         private viewsService: ViewsService,
         private socketService: SocketService
     ) {}
@@ -81,10 +84,15 @@ export class CarouselComponent implements OnInit, AfterContentInit, OnDestroy {
         });
 
         this.subscriptions.push(
-            this.authService.authEvent$.subscribe(event => {
-                this.isLoggedIn = event.isLoggedIn
-            })
-        )
+            this.store
+                .select(createFeatureSelector<AuthState>('auth'))
+                .subscribe((state) => {
+                    this.isLoggedIn = !!state.user.username;
+                })
+            // this.authService.authEvent$.subscribe(event => {
+            //     this.isLoggedIn = event.isLoggedIn
+            // })
+        );
 
         this.subscriptions.push(
             this.socketService.socketCommentEvent.subscribe((event) => {
@@ -295,43 +303,56 @@ export class CarouselComponent implements OnInit, AfterContentInit, OnDestroy {
             return;
         }
         this.newCommentText = this.commentForm.value.newCommentText;
-        const newComment = {
-            photoId: this.photoAttributes.id!,
-            user: this.authService.getAuthVariables().username,
-            commentText: this.newCommentText,
-            rating: this.newRating,
-            viewsNr: 1,
-        };
-        const subscription = this.commentService
-            .postComment(newComment)
-            .pipe(
-                tap((res: any) => {
-                    if (res.error) {
-                        this.dialog.open(ErrordialogComponent, {
-                            data: {
-                                messageHeader:
-                                    'An error occured on the remote server:',
-                                message: res.error.message,
-                            },
-                        });
-                        return;
-                    }
-                    if (res.averageRating) {
-                        const successMessage = 'Comment uploaded successfuly';
-                        this.dialog.open(SuccessdialogComponent, {
-                            data: {
-                                message: successMessage,
-                                duration: 2000,
-                            },
-                        });
-                    }
-                    this.comments.unshift(newComment);
-                    this.resetCommentsForm();
-                    this.photoAttributes.averageRating = res.averageRating;
-                })
-            )
-            .subscribe();
-        this.subscriptions.push(subscription);
+        this.subscriptions.push(
+            this.store
+                .select(createFeatureSelector<AuthState>('auth'))
+                .pipe(
+                    map((state: AuthState) =>{
+                         const newComment: Comment = {
+                            photoId: this.photoAttributes.id!,
+                            user: state.user.username!,
+                            commentText: this.newCommentText,
+                            rating: this.newRating,
+                            // viewsNr: 1,
+                        };
+                        return newComment;
+                    }),
+                    switchMap((newComment: Comment) =>
+                        this.commentService
+                            .postComment(newComment)
+                            .pipe(
+                                tap((res: any) => {
+                                    if (res.error) {
+                                        this.dialog.open(ErrordialogComponent, {
+                                            data: {
+                                                messageHeader:
+                                                    'An error occured on the remote server:',
+                                                message: res.error.message,
+                                            },
+                                        });
+                                        return;
+                                    }
+                                    if (res.averageRating) {
+                                        const successMessage = 'Comment uploaded successfuly';
+                                        this.dialog.open(SuccessdialogComponent, {
+                                            data: {
+                                                message: successMessage,
+                                                duration: 2000,
+                                            },
+                                        });
+                                    }
+                                    this.comments.unshift(newComment);
+                                    this.resetCommentsForm();
+                                    this.photoAttributes.averageRating = res.averageRating;
+                                })
+                            )
+                    )
+                )
+                .subscribe()
+        );
+        // const subscription =
+        //     .subscribe();
+        // this.subscriptions.push(subscription);
     }
 
     resetCommentsForm() {

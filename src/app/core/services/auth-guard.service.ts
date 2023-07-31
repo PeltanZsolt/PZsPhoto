@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute, Router, UrlTree } from '@angular/router';
 import { Observable, pipe, map, BehaviorSubject, tap, of } from 'rxjs';
-import { AuthService } from './auth.service';
 import { Store, createFeatureSelector } from '@ngrx/store';
 import { AuthState } from '../auth.store/auth.reducer';
 
@@ -12,7 +11,6 @@ export class AuthGuardService {
     isAdmin$ = new BehaviorSubject<boolean>(false);
 
     constructor(
-        private authService: AuthService,
         private router: Router,
         private route: ActivatedRoute,
         private store: Store<AuthState>

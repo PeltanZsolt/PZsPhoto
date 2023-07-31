@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { environment } from '../environments/environment';
 import { MenuItem } from './core/models/menu-item';
 import { VisitorsService } from './core/services/visitors.services';
-import { AuthService } from './core/services/auth.service';
+// import { AuthService } from './core/services/auth.service.ts todelete';
 import { SocketService } from './core/services/socket.service';
 import { MatDialog } from '@angular/material/dialog';
 import { LogoutComponent } from './views/menu/logout/logout.component';
@@ -39,7 +39,7 @@ export class AppComponent implements OnInit, OnDestroy {
     constructor(
         private visitorsService: VisitorsService,
         public dialog: MatDialog,
-        private authService: AuthService,
+        // private authService: AuthService,
         private socketService: SocketService,
         private router: Router,
         private store: Store<AuthState>
@@ -79,7 +79,7 @@ export class AppComponent implements OnInit, OnDestroy {
                 'login'
             ),
             new MenuItem(
-                'Sign Up',
+                'SignUp',
                 this.userState$.pipe(map((state) => !state.username)),
                 'openDialog',
                 'signup'

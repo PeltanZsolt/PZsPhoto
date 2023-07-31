@@ -1,7 +1,9 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { io } from 'socket.io-client';
-import { AuthService } from './auth.service';
+// import { AuthService } from './auth.service.ts todelete';
 import { environment } from '../../../environments/environment';
+import { Store, createFeatureSelector } from '@ngrx/store';
+import { AuthState } from '../auth.store/auth.reducer';
 
 @Injectable({
     providedIn: 'root',
@@ -13,7 +15,10 @@ export class SocketService {
     private id: string;
     public connectedClients = 0;
 
-    constructor(private authService: AuthService) {
+    constructor(
+        // private authService: AuthService,
+        private store: Store<AuthState>
+        ) {
         this.socket = io(environment.apiUrl);
     }
 
@@ -33,13 +38,20 @@ export class SocketService {
                 }
             }
         });
-        this.authService.authEvent$.subscribe(() => {
+        this.store.select(createFeatureSelector<AuthState>('auth')).subscribe(state => {
             this.socket.disconnect();
             this.socket.auth = {
-                auth: { jwttoken: this.authService.getJwtToken() },
+                auth: { jwttoken: state.user.jwtToken },
             };
             this.socket.connect();
-        });
+        })
+        // this.authService.authEvent$.subscribe(() => {
+        //     this.socket.disconnect();
+        //     this.socket.auth = {
+        //         auth: { jwttoken: this.authService.getJwtToken() },
+        //     };
+        //     this.socket.connect();
+        // });
     }
 
     emitMessage(message: string) {

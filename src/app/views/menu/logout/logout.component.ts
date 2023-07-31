@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { AuthService } from '../../../core/services/auth.service';
+// import { AuthService } from '../../../core/services/auth.service.ts todelete';
 import { Store, createFeatureSelector } from '@ngrx/store';
 import { AuthState } from 'src/app/core/auth.store/auth.reducer';
 import * as AuthActions from '../../../core/auth.store/auth.actions';
@@ -16,7 +16,7 @@ export class LogoutComponent {
     constructor(
         public dialogRef: MatDialogRef<LogoutComponent>,
         private router: Router,
-        private authService: AuthService,
+        // private authService: AuthService,
         private store: Store<AuthState>,
         @Inject(MAT_DIALOG_DATA) public data: null
     ) {}

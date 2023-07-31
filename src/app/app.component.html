@@ -10,7 +10,6 @@
             <ng-container *ngFor="let item of menuItems">
                 <div class="menu-item" *ngIf="item.cond$ | async">
                     <button mat-button (click)="handleMenuItemClick(item.action, item.route)">{{item.name}}</button>
-                    <mat-divider vertical="true"></mat-divider>
                 </div>
             </ng-container>
         </div>
