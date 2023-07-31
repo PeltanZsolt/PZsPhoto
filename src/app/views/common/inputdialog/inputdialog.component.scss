@@ -1,0 +1,18 @@
+$color-menu-text: #444444;
+$color-lightgrey: #d4d4d4;
+
+form {
+    width: 16rem;;
+    text-align: center;
+    h1 {
+        margin: auto;
+        color: $color-menu-text;
+        background-color: $color-lightgrey;
+        margin-bottom: .6rem;
+    }
+
+    div {
+        display: flex;
+        justify-content: center;
+    }
+}

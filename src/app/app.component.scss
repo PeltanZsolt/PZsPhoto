@@ -61,7 +61,7 @@ footer {
     display: flex;
     justify-content: space-between;
     background-color: $color-lightgrey;
-    margin-top: 0.2rem;
+    margin-top: .2rem;
     align-items: center;
     #footer-center {
         margin: 0 auto;
@@ -73,7 +73,6 @@ footer {
             display: block;
             box-shadow: 3px 3px 4px $color-menu-hover;
             font-size: inherit;
-            // position: relative;
         }
 
         button:hover {

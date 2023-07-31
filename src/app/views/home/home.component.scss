@@ -3,54 +3,54 @@ $color-lightgrey: #d4d4d4;
 $color-menu-hover: #a7a7a7;
 $color-menu-text: #444444;
 ul {
-  background-color: $color-backgroundgrey;
-  list-style: none;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  justify-content: space-between;
-  gap: 1.5rem 1rem;
-  font-family: "Istok Web", sans-serif;
-  padding: 1.5rem;
-  margin: 0 auto;
-  padding-bottom: 6rem;
-  li {
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: white;
-    border-radius: 6px;
-    height: 30rem;
-    a {
-      text-decoration: none;
-      width: 100%;
-      img {
-        width: 100%;
-        height: 28rem;
-        object-fit: cover;
-      }
-      h2 {
-        margin-top: -0.4rem;
-        text-align: center;
-        font-size: 1.2rem;
-        color: $color-menu-text;
-      }
+    background-color: $color-backgroundgrey;
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    justify-content: space-between;
+    gap: 1.5rem 1rem;
+    font-family: "Istok Web", sans-serif;
+    padding: 1.5rem;
+    margin: 0 auto;
+    padding-bottom: 10rem;
+    li {
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: white;
+        border-radius: 6px;
+        height: 30rem;
+        a {
+            text-decoration: none;
+            width: 100%;
+            img {
+                width: 100%;
+                height: 28rem;
+                object-fit: cover;
+            }
+            h2 {
+                margin-top: -0.4rem;
+                text-align: center;
+                font-size: 1.2rem;
+                color: $color-menu-text;
+            }
+        }
     }
-  }
-  li:hover {
-    border-color: $color-menu-hover;
-    border-width: 4px;
-    border-style: solid;
-    box-sizing: border-box;
-  }
+    li:hover {
+        border-color: $color-menu-hover;
+        border-width: 4px;
+        border-style: solid;
+        box-sizing: border-box;
+    }
 }
 @media (max-width: 120rem) {
-  ul {
-    grid-template-columns: 1fr 1fr;
-  }
+    ul {
+        grid-template-columns: 1fr 1fr;
+    }
 }
 @media (max-width: 75rem) {
-  ul {
-    grid-template-columns: 1fr;
-  }
+    ul {
+        grid-template-columns: 1fr;
+    }
 }

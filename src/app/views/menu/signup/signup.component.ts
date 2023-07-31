@@ -1,15 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Subscription, debounceTime, tap, startWith, map, of, takeUntil, exhaustMap } from 'rxjs';
-import { Router } from '@angular/router';
+import { Subscription, debounceTime, tap, startWith } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { User } from '../../../core/models/user.model';
-import { UserService } from '../../../core/services/user.service';
 import { ErrorDialogData } from '../../../core/models/error.dialog.data.model';
 import { ErrordialogComponent } from '../../common/errordialog/errordialog.component';
 import { SuccessDialogData } from '../../../core/models/success.dialog.data.model';
 import { SuccessdialogComponent } from '../../common/successdialog/successdialog.component';
-import { AuthService } from '../../../core/services/auth.service';
 import { DialogRef } from '@angular/cdk/dialog';
 import { Store, createFeatureSelector } from '@ngrx/store';
 import { AuthState } from 'src/app/core/auth.store/auth.reducer';
@@ -32,9 +29,7 @@ export class SignupComponent implements OnInit, OnDestroy {
     subscriptions: Subscription[] = [];
 
     constructor(
-        private userService: UserService,
         private dialog: MatDialog,
-        private authService: AuthService,
         private dialogRef: DialogRef,
         private store: Store<AuthState>
     ) {}
@@ -68,8 +63,8 @@ export class SignupComponent implements OnInit, OnDestroy {
 
         this.subscriptions.push(
             this.store
-                .select(createFeatureSelector('auth'))
-                .subscribe((state: any) => {
+                .select(createFeatureSelector<AuthState>('auth'))
+                .subscribe((state: AuthState) => {
                     this.handleSignupResponse(state.authErrorState);
                 })
         );
@@ -106,11 +101,10 @@ export class SignupComponent implements OnInit, OnDestroy {
         );
 
         this.store.dispatch(AuthActions.SignupStart({ user }));
-
     }
 
-    handleSignupResponse(res: any): void {
-        switch (res.message) {
+    handleSignupResponse(authState: any): void {
+        switch (authState.message) {
             case 'Username already exists.': {
                 const data: ErrorDialogData = {
                     messageHeader: 'Could not sign up. Username already exists',
@@ -124,7 +118,7 @@ export class SignupComponent implements OnInit, OnDestroy {
             }
             case `Passwords doesn't match`: {
                 const data: ErrorDialogData = {
-                    messageHeader: res.message,
+                    messageHeader: authState.message,
                     messageBody: 'Verify your credentials.',
                     duration: 5000,
                 };
@@ -148,7 +142,7 @@ export class SignupComponent implements OnInit, OnDestroy {
             case 'Signup successful!':
                 {
                     const data: SuccessDialogData = {
-                        message: res.message,
+                        message: authState.message,
                         duration: 2000,
                     };
                     this.dialog.open(SuccessdialogComponent, {
@@ -158,12 +152,6 @@ export class SignupComponent implements OnInit, OnDestroy {
                 setTimeout(() => {
                     this.dialogRef.close();
                 }, 2000);
-                // this.authService.setAuthVariables(
-                //     this.username,
-                //     res.jwtToken,
-                //     true,
-                //     false
-                // );
         }
     }
 

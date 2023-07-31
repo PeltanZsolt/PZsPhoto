@@ -14,7 +14,7 @@ import { CategoryInputDialogService } from '../../../core/services/category.inpu
     styleUrls: ['./inputdialog.component.scss'],
 })
 export class InputdialogComponent implements OnInit {
-    category: string;
+    category: string ='';
     formGroup: FormGroup;
 
     constructor(
@@ -27,7 +27,7 @@ export class InputdialogComponent implements OnInit {
 
     ngOnInit() {
         this.formGroup = new FormGroup({
-            category: new FormControl('', Validators.min(3)),
+            category: new FormControl('', [Validators.required, Validators.minLength(3)]),
         });
     }
 
@@ -46,9 +46,10 @@ export class InputdialogComponent implements OnInit {
                     );
                     this.dialogRef.close();
                 } else {
+
                     const data: ErrorDialogData = {
-                        messageHeader: 'Server error!',
-                        messageBody: 'Could not create a new category.',
+                        messageHeader: 'Error!',
+                        messageBody: res.message,
                         duration: 2000,
                     };
                     this.dialog.open(ErrordialogComponent, { data: data });
