@@ -1,15 +1,16 @@
+
 <header>
     <mat-toolbar id="header-bar">
         <div id="pzsphoto-logo">
             <img src="../assets/logo/pzs photo logo.svg" alt="PZS Photo logo" height="60" routerLink="/" />
         </div>
         <p *ngIf="(userState$ | async)?.username">
-            Welcome, {{(userState$ | async)!.username}}!
+            {{'Menu.Welcome' | translate}}, {{(userState$ | async)!.username}}!
         </p>
         <div id="full-menu">
             <ng-container *ngFor="let item of menuItems">
                 <div class="menu-item" *ngIf="item.cond$ | async">
-                    <button mat-button (click)="handleMenuItemClick(item.action, item.route)">{{item.name}}</button>
+                    <button mat-button (click)="handleMenuItemClick(item.action, item.route)">{{'Menu.' + item.name | translate}}</button>
                 </div>
             </ng-container>
         </div>
@@ -20,7 +21,22 @@
             <mat-menu #mobilemenu="matMenu">
                 <ng-container *ngFor="let item of menuItems">
                     <button *ngIf="item.cond$ | async" mat-menu-item
-                        (click)="handleMenuItemClick(item.action, item.route)">{{item.name}}</button>
+                        (click)="handleMenuItemClick(item.action, item.route)">{{'Menu.' +  item.name | translate}}</button>
+                </ng-container>
+            </mat-menu>
+        </div>
+        <div id="languages">
+            <button mat-icon-button [matMenuTriggerFor]="languagesMenu">
+                <mat-icon>language</mat-icon>
+            </button>
+            <mat-menu #languagesMenu="matMenu">
+                <ng-container *ngFor="let locale of locales; index as i">
+                    <button  (click)="onChangeLanguage(i)" mat-menu-item>
+                        <div>
+                            <strong *ngIf="i === languageIndex">{{'Menu.' +  locale.lang | translate}}</strong>
+                            <span *ngIf="i !== languageIndex">{{'Menu.' +  locale.lang | translate}}</span>
+                        </div>
+                    </button>
                 </ng-container>
             </mat-menu>
         </div>
@@ -30,15 +46,15 @@
 <footer id="footer">
     <div id="footer-center">
         <button (click)="onScrollToTop()" *ngIf="windowScrolled">
-            Back to top
+            {{'Footer.backToTop' | translate}}
         </button>
         <div>
-            <p>(c) Copyright 2023 Peltan Zsolt. Photos by Peltan Zsolt <br> Version: {{version}}. Currently there are
-                {{connectedClientsCount}} user(s) viewing this site. </p>
+            <p>{{'Footer.copyrightText' | translate}} <br> {{'Footer.Version' | translate}}: {{version}}. {{'Footer.visitorsCountText1' | translate}}
+                {{connectedClientsCount}} {{'Footer.visitorsCountText2' | translate}} </p>
         </div>
     </div>
     <div id="footer-right">
-        <div>Total number of visitors:</div>
+        <div>{{'Footer.visitorsCountText' | translate}}</div>
         <div>{{ visitorsCount }}</div>
     </div>
 </footer>

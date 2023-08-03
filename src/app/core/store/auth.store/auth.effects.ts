@@ -1,18 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import * as AuthActions from './auth.actions';
-import {
-    map,
-    switchMap,
-
-} from 'rxjs';
+import { map, switchMap } from 'rxjs';
 import { UserService } from 'src/app/core/services/user.service';
 
 @Injectable()
 export class AuthEffects {
-    constructor(private actions$: Actions, private userService: UserService) {}
-
     username = '';
+
+    constructor(private actions$: Actions, private userService: UserService) {}
 
     loginStart$ = createEffect(() =>
         this.actions$.pipe(
@@ -62,8 +58,7 @@ export class AuthEffects {
                         message: response.message,
                     });
                 }
-            }),
+            })
         )
     );
 }
-

@@ -11,27 +11,27 @@
     <div id="attributes" *ngIf="photoAttributes">
         <div id="first-row">
             <app-rating [averageRating]="photoAttributes.averageRating!" [height]="1.4" [colorful]="true"></app-rating>
-            <p><strong>{{photoAttributes.viewsNr}}</strong> views</p>
+            <p><strong>{{photoAttributes.viewsNr}}</strong> {{'Carousel.views' | translate}}</p>
         </div>
-        <p><strong>Title:</strong> {{photoAttributes.title}}</p>
-        <p><strong>Place:</strong> {{photoAttributes.place}}</p>
-        <p><strong>Date:</strong> {{photoAttributes.year}}</p>
-        <p><strong>Description:</strong> {{photoAttributes.description}}</p>
+        <p><strong>{{'Carousel.Title' | translate}}:</strong> {{photoAttributes.title}}</p>
+        <p><strong>{{'Carousel.Place' | translate}}:</strong> {{photoAttributes.place}}</p>
+        <p><strong>{{'Carousel.Date' | translate}}:</strong> {{photoAttributes.year}}</p>
+        <p><strong>{{'Carousel.Description' | translate}}:</strong> {{photoAttributes.description !=='null' ? photoAttributes.description : ''}}</p>
         <div id="comments-header">
-            <p><strong>Comments:</strong> </p>
+            <p><strong>{{'Carousel.Comments' | translate}}:</strong> </p>
             <div class="buttons-container">
                 <button mat-button color="primary" (click)="onAddNewComment()" *ngIf="!showNewComment"
-                    matTooltip="Post new comment" matTooltipPosition="above">
+                    [matTooltip]="'Carousel.PostComment' | translate" matTooltipPosition="above">
                     <mat-icon>comment</mat-icon>
                 </button>
                 <button mat-button color="primary" (click)="onUploadComment()" *ngIf="showNewComment"
-                    matTooltip="Upload comment" matTooltipPosition="above"
+                    [matTooltip]="'Carousel.UploadComment' | translate" matTooltipPosition="above"
                     [disabled]="!(showNewComment && commentForm.valid && newRating > 0)">
                     <mat-icon>upload</mat-icon>
                 </button>
                 <button mat-button color="primary" (click)="onCancelNewComment()" *ngIf="showNewComment"
-                    matTooltip="Cancel" matTooltipPosition="above">
-                    <mat-icon>delete</mat-icon>
+                    [matTooltip]="'Carousel.Cancel' | translate" matTooltipPosition="above">
+                    <mat-icon>cancel</mat-icon>
                 </button>
             </div>
         </div>
@@ -40,7 +40,7 @@
                 <app-rating (click)="onRatingClicked($event)" [averageRating]="newRating" [colorful]="true"
                     [showStar0]="true" [height]="1.3"></app-rating>
                 <mat-form-field appearance="fill" id="commentInputField" style="width: 100%">
-                    <mat-label>Leave a comment:</mat-label>
+                    <mat-label>{{'Carousel.TypeComment' | translate}}</mat-label>
                     <textarea matInput formControlName="newCommentText" rows="4" id="textarea" minlength="2"
                         style="height: 10rem;font-size: 1rem;"></textarea>
                 </mat-form-field>

@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Observable, Subscription } from 'rxjs';
+import {  Subscription } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { User } from '../../../core/models/user.model';
 import { ErrorDialogData } from '../../../core/models/error.dialog.data.model';
@@ -9,8 +9,8 @@ import { SuccessDialogData } from '../../../core/models/success.dialog.data.mode
 import { SuccessdialogComponent } from '../../common/successdialog/successdialog.component';
 import { DialogRef } from '@angular/cdk/dialog';
 import { Store, createFeatureSelector } from '@ngrx/store';
-import * as AuthActions from '../../../core/auth.store/auth.actions';
-import { AuthState } from 'src/app/core/auth.store/auth.reducer';
+import * as AuthActions from '../../../core/store/auth.store/auth.actions';
+import { AuthState } from 'src/app/core/store/auth.store/auth.reducer';
 
 @Component({
     selector: 'app-login',
@@ -35,7 +35,7 @@ export class LoginComponent implements OnInit, OnDestroy {
                     hasError: boolean;
                 };
             };
-        }>
+        }>,
     ) {}
 
     ngOnInit(): void {

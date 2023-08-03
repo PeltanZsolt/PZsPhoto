@@ -1,63 +1,71 @@
-<h1>UPLOAD PHOTOS</h1>
+<h1> {{'Upload.Upload' | translate}} </h1>
 <div class="file-upload">
     <form [formGroup]="formGroup">
         <input type="file" class="file-input" accept="image/jpeg" #fileSelect (change)="onFileChange($event)">
         <div mat-dialog-actions align="end">
-            <button mat-raised-button color="primary" type="button" (click)=fileSelect.click()>Select a
-                photo to upload...</button>
+            <button mat-raised-button color="primary" type="button" (click)=fileSelect.click()>
+                {{'Upload.SelectPhoto' | translate}}</button>
         </div>
-        <p id="filename" appearance="standard">File selected: {{selectedFile.name? selectedFile.name : 'No file selected'}}
+        <p id="filename" appearance="standard"> {{selectedFile.name? ('Upload.FileSelected' | translate) + ': ' +
+            selectedFile.name : ('Upload.NoFile' | translate) }}
         </p>
 
         <mat-form-field appearance="fill">
-            <mat-label>Title</mat-label>
-            <input matInput maxlength="50" inputmode="full-width-latin" placeholder="Type the photo's title"
-                formControlName="title">
-            <mat-error>Title is required.</mat-error>
+            <mat-label>{{'Upload.Title' | translate}}</mat-label>
+            <input matInput maxlength="50" inputmode="full-width-latin"
+                [placeholder]="'Upload.TypeTitle' | translate" formControlName="title">
+            <mat-error>{{'Upload.RequiredField' | translate}}</mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="fill">
-            <mat-label>Select a category</mat-label>
+            <mat-label>{{'Upload.SelectCategory' | translate}}</mat-label>
             <mat-select matNativeControl name="category" formControlName="category">
-                <mat-option *ngFor="let category of categories" [value]="category">{{category}}</mat-option>
-                <mat-option (click)="onCreateNewCategory()">Create new category...</mat-option>
+                <mat-option *ngFor="let category of categories" [value]="category">{{'Home.' + category |
+                    translate}}</mat-option>
+                <mat-option (click)="onCreateNewCategory()">{{'Upload.CreateCategory' | translate}}</mat-option>
             </mat-select>
+            <mat-error>{{'Upload.RequiredField' | translate}}</mat-error>
+
         </mat-form-field>
 
         <mat-form-field appearance="fill">
-            <mat-label>Description:</mat-label>
-            <textarea matInput placeholder="description" formControlName="description" rows="4"></textarea>
+            <mat-label>{{'Upload.Description' | translate}}:</mat-label>
+            <textarea matInput [placeholder]="'Upload.Description' | translate" formControlName="description"
+                rows="4"></textarea>
         </mat-form-field>
 
         <mat-form-field appearance="fill">
-            <mat-label>Year of capture:</mat-label>
-            <mat-select matNativeControl formControlName="year" placeholder="Year of capture">
+            <mat-label>{{'Upload.Year' | translate}}:</mat-label>
+            <mat-select matNativeControl formControlName="year"
+                [placeholder]="'Upload.YearOfCapture' | translate">
                 <mat-option>---</mat-option>
                 <mat-option *ngFor="let year of yearsRange" [value]="year">{{year}}</mat-option>
             </mat-select>
+            <mat-error>{{'Upload.RequiredField' | translate}}</mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="fill">
-            <mat-label>Place</mat-label>
-            <input matInput maxlenght="30" inputmode="full-width-latin" placeholder="Type the place of capture"
-                formControlName="place">
-            <mat-error>Place is required.</mat-error>
+            <mat-label>{{'Upload.Place' | translate}}</mat-label>
+            <input matInput maxlenght="30" inputmode="full-width-latin"
+                [placeholder]="'Upload.PlaceExplained' | translate" formControlName="place">
+            <mat-error>{{'Upload.RequiredField' | translate}}</mat-error>
         </mat-form-field>
         <section>
             <div mat-dialog-actions>
                 <button mat-raised-button color="primary" type="submit"
-                    [disabled]="!selectedFile.name || formGroup.invalid" (click)="onUploadPhoto()">Submit</button>
+                    [disabled]="!selectedFile.name || formGroup.invalid"
+                    (click)="onUploadPhoto()">{{'Upload.Submit' | translate}}</button>
             </div>
             <div mat-dialog-actions align="end">
                 <button mat-raised-button color="primary" type="button"
-                    [disabled]="!selectedFile.name && formGroup.pristine" (click)="resetInputFields()">Reset
-                    Form</button>
+                    [disabled]="!selectedFile.name && formGroup.pristine"
+                    (click)="resetInputFields()">{{'Upload.ResetForm' | translate}}</button>
             </div>
         </section>
 
     </form>
-    <div id="thumbnail" [ngStyle]="selectedFile.name? {'background-color': 'inherit'} : {'background-color': thumbnailBackground}">
-        <p *ngIf="!selectedFile">No photo selected.</p>
+    <div id="thumbnail"
+        [ngStyle]="selectedFile.name? {'background-color': 'inherit'} : {'background-color': thumbnailBackground}">
         <img [src]="previewImg" *ngIf="selectedFile">
     </div>
 </div>

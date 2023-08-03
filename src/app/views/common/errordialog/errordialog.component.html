@@ -1,6 +1,6 @@
 <div class="errordialog-wrapper">
-    <h1 mat-dialog-title><strong>{{data.messageHeader}}</strong></h1>
-    <p mat-dialog-content> {{data.messageBody}}</p>
+    <h1 mat-dialog-title><strong>{{'Error' + data.messageHeader | translate}}</strong></h1>
+    <p mat-dialog-content> {{'Error' + data.messageBody | translate}}</p>
     <div mat-dialog-actions>
         <button mat-raised-button (click)="onOkClick()">Got it</button>
     </div>

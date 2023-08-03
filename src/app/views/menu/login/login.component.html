@@ -1,23 +1,23 @@
 <div class="file-upload">
-    <h1 mat-dialog-title>LOG IN</h1>
+    <h1 mat-dialog-title>{{'Login.Login' | translate}}</h1>
     <form [formGroup]="formGroup" mat-dialog-content>
         <mat-form-field appearance="fill" >
-            <mat-label>User name</mat-label>
-            <input matInput maxlength="50" inputmode="full-width-latin" placeholder="User name or email address"
+            <mat-label>{{'Login.Username' | translate}}</mat-label>
+            <input matInput maxlength="50" inputmode="full-width-latin" [placeholder]="'Login.UsernameOrEmail' | translate"
                 formControlName="username">
-            <mat-error>Username is required.</mat-error>
+            <mat-error> {{'Login.RequiredField' |  translate}} </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="fill">
-            <mat-label>Password:</mat-label>
-            <input matInput placeholder="Input password"
+            <mat-label>{{'Login.Password' | translate}}:</mat-label>
+            <input matInput [placeholder]="'Login.InputPassword' | translate"
                 formControlName="password" type="password">
-            <mat-error>Password is required</mat-error>
+            <mat-error>{{'Login.RequiredField' |  translate}}</mat-error>
         </mat-form-field>
 
         <div mat-dialog-actions align="end">
             <button mat-raised-button color="primary" type="submit" [disabled]="!formGroup.valid"
-                (click)="sumbitLogin()">Submit</button>
+                (click)="sumbitLogin()">{{'Login.Submit' | translate}}</button>
         </div>
     </form>
 </div>

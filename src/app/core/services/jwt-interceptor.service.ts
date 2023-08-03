@@ -5,7 +5,7 @@ import {
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Store, createFeatureSelector } from '@ngrx/store';
-import { AuthState } from '../auth.store/auth.reducer';
+import { AuthState } from '../store/auth.store/auth.reducer';
 
 @Injectable()
 export class JwtInterceptorService implements HttpInterceptor {

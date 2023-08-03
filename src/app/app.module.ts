@@ -3,10 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {
-    HttpClientModule,
-    HTTP_INTERCEPTORS,
-} from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -18,10 +15,10 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import {MatIconModule} from '@angular/material/icon';
-import {MatMenuModule} from '@angular/material/menu';
-import {MatButtonModule} from '@angular/material/button';
-import {MatToolbarModule} from '@angular/material/toolbar'
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatButtonModule } from '@angular/material/button';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './views/home/home.component';
@@ -53,8 +50,12 @@ import { LegalComponent } from './views/menu/legal/legal.component';
 
 import { Store, StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import {authReducer} from './core/auth.store/auth.reducer'
-import { AuthEffects } from './core/auth.store/auth.effects';
+import { authReducer } from './core/store/auth.store/auth.reducer';
+import { AuthEffects } from './core/store/auth.store/auth.effects';
+
+import { TranslateModule } from '@ngx-translate/core';
+import { translateReducer } from './core/store/translate.store/translate.reducer';
+import { TranslateEffects } from './core/store/translate.store/translate.effects';
 
 @NgModule({
     declarations: [
@@ -68,6 +69,7 @@ import { AuthEffects } from './core/auth.store/auth.effects';
         ContactComponent,
         LoginComponent,
         SignupComponent,
+        LogoutComponent,
         UsersComponent,
         StatisticsComponent,
         ErrordialogComponent,
@@ -97,8 +99,9 @@ import { AuthEffects } from './core/auth.store/auth.effects';
         MatAutocompleteModule,
         MatMenuModule,
         MatToolbarModule,
-        StoreModule.forRoot({auth: authReducer},{}),
-        EffectsModule.forRoot([AuthEffects])
+        StoreModule.forRoot({auth: authReducer, translate: translateReducer}),
+        EffectsModule.forRoot([AuthEffects, TranslateEffects]),
+        TranslateModule.forRoot(),
     ],
     providers: [
         VisitorsService,

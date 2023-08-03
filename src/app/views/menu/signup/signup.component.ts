@@ -9,8 +9,8 @@ import { SuccessDialogData } from '../../../core/models/success.dialog.data.mode
 import { SuccessdialogComponent } from '../../common/successdialog/successdialog.component';
 import { DialogRef } from '@angular/cdk/dialog';
 import { Store, createFeatureSelector } from '@ngrx/store';
-import { AuthState } from 'src/app/core/auth.store/auth.reducer';
-import * as AuthActions from '../../../core/auth.store/auth.actions';
+import { AuthState } from 'src/app/core/store/auth.store/auth.reducer';
+import * as AuthActions from '../../../core/store/auth.store/auth.actions';
 
 @Component({
     selector: 'app-signup',
@@ -22,6 +22,7 @@ export class SignupComponent implements OnInit, OnDestroy {
     username: string;
     password: string;
     passwordVerify: string;
+    pwdEqualsError = false;
     user: User;
     generatedPassword: string;
     hide = false;
@@ -39,8 +40,7 @@ export class SignupComponent implements OnInit, OnDestroy {
             username: new FormControl(this.username, Validators.required),
             password: new FormControl(this.password, Validators.required),
             passwordVerify: new FormControl(
-                this.passwordVerify,
-                Validators.required
+                this.passwordVerify
             ),
         });
         this.subscriptions.push(
@@ -55,6 +55,16 @@ export class SignupComponent implements OnInit, OnDestroy {
                             this.formGroup.controls['password'].value;
                         this.passwordVerify =
                             this.formGroup.controls['passwordVerify'].value;
+
+                        if (this.password === this.passwordVerify) {
+                            this.formGroup.controls['passwordVerify'].setErrors(
+                                null
+                            );
+                        } else {
+                            this.formGroup.controls['passwordVerify'].setErrors(
+                                { invalid: true }
+                            );
+                        }
                     })
                 )
                 .subscribe()

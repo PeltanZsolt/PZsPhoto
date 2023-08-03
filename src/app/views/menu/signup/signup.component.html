@@ -1,17 +1,18 @@
 <div class="file-upload">
-    <h1 mat-dialog-title>SIGN-UP</h1>
+    <h1 mat-dialog-title> {{'Signup.SignUp' | translate}}</h1>
     <form [formGroup]="formGroup">
         <mat-form-field appearance="fill">
-            <mat-label>User name</mat-label>
-            <input matInput maxlength="50" inputmode="full-width-latin" placeholder="User name or email address"
-                formControlName="username">
-            <mat-error>Username is required.</mat-error>
+            <mat-label> {{'Signup.Username' | translate}} </mat-label>
+            <input matInput maxlength="50" inputmode="full-width-latin"
+                [placeholder]="'Signup.UsernameOrEmail' | translate" formControlName="username">
+            <mat-error>{{'Signup.RequiredField' | translate}}</mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="fill">
-            <mat-label>Password:</mat-label>
+            <mat-label>{{'Signup.Password' | translate}}:</mat-label>
             <input [type]="hide ? 'password' : 'text'" matInput maxlenght="30" minlength="3"
-                placeholder="Input a strong password" formControlName="password" [matAutocomplete]="autoPassword">
+                [placeholder]="'Signup.InputStrongPwd' | translate" formControlName="password"
+                [matAutocomplete]="autoPassword">
             <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
             <mat-autocomplete #autoPassword="matAutocomplete">
                 <mat-option [value]="generatedPassword" (click)="onClickGeneratedPassword($event)">
@@ -19,20 +20,20 @@
                 </mat-option>
                 <mat-option [value]="password">{{password}}</mat-option>
             </mat-autocomplete>
-            <mat-error>Password must include lowrcase letter, uppercase letter, number. At least 3 characters. No
-                special characters allowed.</mat-error>
+            <mat-error>{{'Signup.PwdStrenghtError' | translate}}</mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="fill">
-            <mat-label>Confirm password:</mat-label>
-            <input type="password" matInput maxlenght="30" minlength="3" placeholder="Type password again"
-                formControlName="passwordVerify">
-            <mat-error>The two passwords must be identic.</mat-error>
+            <mat-label>{{'Signup.ConfirmPassword' | translate}}:</mat-label>
+            <input [type]="hide ? 'password' : 'text'" matInput maxlenght="30"
+                [placeholder]="'Signup.TypePwdAgain' | translate" formControlName="passwordVerify">
+            <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            <mat-error> {{'Signup.PwdDifferentError' | translate}} </mat-error>
         </mat-form-field>
 
         <div mat-dialog-actions align="end">
             <button mat-raised-button color="primary" type="submit" [disabled]="!formGroup.valid"
-                (click)="onSignUp()">Submit</button>
+                (click)="onSignUp()">{{'Signup.Submit' | translate}}</button>
         </div>
     </form>
 </div>

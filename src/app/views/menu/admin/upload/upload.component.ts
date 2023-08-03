@@ -106,7 +106,7 @@ export class UploadComponent implements OnInit, OnDestroy {
 
     onCreateNewCategory() {
         const data: InputDialogData = {
-            messageHeader: 'Create new category ',
+            messageHeader: 'CreateNewCategory',
         };
         this.dialog.open(InputdialogComponent, { data: data });
     }

@@ -51,7 +51,6 @@ $color-menu-text: #444444;
         display: none;
         margin-right: 1rem;
     }
-
     #mobile-menu:hover {
         background-color: $color-menu-hover;
         cursor: pointer;
@@ -109,7 +108,6 @@ footer {
         }
         #mobile-menu {
             display: flex;
-            flex-direction: column;
         }
     }
     footer {

@@ -1,12 +1,12 @@
 <form [formGroup]="formGroup">
-    <h1 mat-dialog-title><strong>{{data.messageHeader}}</strong></h1>
+    <h1 mat-dialog-title><strong>{{'Input.' + data.messageHeader | translate}}</strong></h1>
     <mat-form-field>
-        <mat-label>Input new category name</mat-label>
-        <input matInput maxlength="50" inputmode="full-width-latin" placeholder="category name"
+        <mat-label>{{'Input.Inputcategory' | translate}} </mat-label>
+        <input matInput maxlength="50" inputmode="full-width-latin" [placeholder]="'Input.CategoryName' | translate"
             formControlName="category">
     </mat-form-field>
     <div mat-dialog-actions>
-        <button mat-button (click)="onNoClick()">Cancel</button>
-        <button mat-button (click)="onOkClick()" [disabled]="formGroup.invalid">OK</button>
+        <button mat-button (click)="onNoClick()"> {{'Input.Cancel' | translate}} </button>
+        <button mat-button (click)="onOkClick()" [disabled]="formGroup.invalid">{{'Input.OK' | translate}}</button>
     </div>
 </form>

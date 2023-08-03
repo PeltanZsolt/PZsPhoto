@@ -3,7 +3,6 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subscription, forkJoin, switchMap, tap, concat, of, map } from 'rxjs';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-// import { AuthService } from '../../../core/services/auth.service.ts todelete';
 import { PhotoService } from '../../../core/services/photo.service';
 import { CommentService } from '../../../core/services/comment.service';
 import { ViewsService } from '../../../core/services/views.services';
@@ -14,7 +13,7 @@ import { ErrordialogComponent } from '../../common/errordialog/errordialog.compo
 import { SuccessdialogComponent } from '../../common/successdialog/successdialog.component';
 import { SocketService } from 'src/app/core/services/socket.service';
 import { Store, createFeatureSelector } from '@ngrx/store';
-import { AuthState } from 'src/app/core/auth.store/auth.reducer';
+import { AuthState } from 'src/app/core/store/auth.store/auth.reducer';
 
 @Component({
     selector: 'app-carousel',
@@ -44,7 +43,6 @@ export class CarouselComponent implements OnInit, AfterContentInit, OnDestroy {
         private photoService: PhotoService,
         private commentService: CommentService,
         private dialog: MatDialog,
-        // private authService: AuthService,
         private store: Store<AuthState>,
         private viewsService: ViewsService,
         private socketService: SocketService
@@ -89,9 +87,6 @@ export class CarouselComponent implements OnInit, AfterContentInit, OnDestroy {
                 .subscribe((state) => {
                     this.isLoggedIn = !!state.user.username;
                 })
-            // this.authService.authEvent$.subscribe(event => {
-            //     this.isLoggedIn = event.isLoggedIn
-            // })
         );
 
         this.subscriptions.push(
@@ -350,9 +345,6 @@ export class CarouselComponent implements OnInit, AfterContentInit, OnDestroy {
                 )
                 .subscribe()
         );
-        // const subscription =
-        //     .subscribe();
-        // this.subscriptions.push(subscription);
     }
 
     resetCommentsForm() {

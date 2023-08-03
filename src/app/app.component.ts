@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { environment } from '../environments/environment';
 import { MenuItem } from './core/models/menu-item';
 import { VisitorsService } from './core/services/visitors.services';
-// import { AuthService } from './core/services/auth.service.ts todelete';
 import { SocketService } from './core/services/socket.service';
 import { MatDialog } from '@angular/material/dialog';
 import { LogoutComponent } from './views/menu/logout/logout.component';
@@ -12,7 +11,11 @@ import { LoginComponent } from './views/menu/login/login.component';
 import { SignupComponent } from './views/menu/signup/signup.component';
 import { Store, createFeatureSelector } from '@ngrx/store';
 import { User } from './core/models/user.model';
-import { AuthState } from './core/auth.store/auth.reducer';
+import { AuthState } from './core/store/auth.store/auth.reducer';
+
+import { TranslateState } from './core/store/translate.store/translate.reducer';
+import * as translateActions from './core/store/translate.store/translate.actions';
+import { locales } from './core/models/locales.model';
 
 @Component({
     selector: 'app-root',
@@ -25,24 +28,21 @@ export class AppComponent implements OnInit, OnDestroy {
     windowScrolled = false;
     connectedClientsCount = 1;
 
-    // isAdmin = false;
-    // isLoggedIn = false;
-    // username = '';
-    // username$: any;
-    // user: any;
-    // state$: any;
     userState$: Observable<User>;
     menuItems: MenuItem[] = [];
+
+    locales = locales;
+    languageIndex: number;
 
     subscriptions: Subscription[] = [];
 
     constructor(
         private visitorsService: VisitorsService,
         public dialog: MatDialog,
-        // private authService: AuthService,
         private socketService: SocketService,
         private router: Router,
-        private store: Store<AuthState>
+        private authStore: Store<AuthState>,
+        private translateStore: Store<TranslateState>
     ) {}
 
     @HostListener('window:scroll', [])
@@ -55,11 +55,11 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        // window.addEventListener('beforeunload', function (event) {
-        //     var confirmationMessage = 'o/';
-        //     event.returnValue = confirmationMessage;
-        //     return confirmationMessage;
-        // });
+        window.addEventListener('beforeunload', function (event) {
+            var confirmationMessage = 'o/';
+            event.returnValue = confirmationMessage;
+            return confirmationMessage;
+        });
 
         this.subscriptions.push(
             this.visitorsService.getVisitorsNumber().subscribe((res) => {
@@ -67,37 +67,18 @@ export class AppComponent implements OnInit, OnDestroy {
             })
         );
 
-        this.userState$ = this.store
+        this.userState$ = this.authStore
             .select(createFeatureSelector<AuthState>('auth'))
             .pipe(map((state) => state.user));
 
+        // prettier-ignore
         this.menuItems = [
-            new MenuItem(
-                'Login',
-                this.userState$.pipe(map((state) => !state.username)),
-                'openDialog',
-                'login'
-            ),
-            new MenuItem(
-                'SignUp',
-                this.userState$.pipe(map((state) => !state.username)),
-                'openDialog',
-                'signup'
-            ),
-            new MenuItem(
-                'Logout',
-                this.userState$.pipe(map((state) => !!state.username)),
-                'openDialog',
-                'logout'
-            ),
+            new MenuItem('Login', this.userState$.pipe(map((state) => !state.username)), 'openDialog', 'login' ),
+            new MenuItem('SignUp', this.userState$.pipe(map((state) => !state.username)), 'openDialog', 'signup'),
+            new MenuItem('Logout', this.userState$.pipe(map((state) => !!state.username)), 'openDialog', 'logout' ),
             new MenuItem('Contact', of(true), 'navigate', '/contact'),
             new MenuItem('Legal', of(true), 'navigate', '/legal'),
-            new MenuItem(
-                'Admin',
-                this.userState$.pipe(map((state) => state.isAdmin!)),
-                'navigate',
-                '/admin'
-            ),
+            new MenuItem('Admin', this.userState$.pipe(map((state) => state.isAdmin!)), 'navigate', '/admin'),
         ];
 
         this.socketService.initSocket();
@@ -107,14 +88,21 @@ export class AppComponent implements OnInit, OnDestroy {
                 this.connectedClientsCount = res;
             })
         );
-    }
+        this.translateStore.dispatch(
+            translateActions.LanguageChangeStart({
+                languageIndex: 0,
+                languageCode: locales[0].lang,
+            })
+        );
 
-    // updateMenuItems(res: any) {
-    //     this.menuItems[0].cond = !res.isLoggedIn;
-    //     this.menuItems[1].cond = !res.isLoggedIn;
-    //     this.menuItems[2].cond = res.isLoggedIn;
-    //     this.menuItems[5].cond = res.isAdmin;
-    // }
+        this.subscriptions.push(
+            this.translateStore
+                .select(createFeatureSelector<TranslateState>('translate'))
+                .subscribe((state: TranslateState) => {
+                    this.languageIndex = state.languageIndex;
+                })
+        );
+    }
 
     onScrollToTop() {
         window.scrollTo(0, 0);
@@ -127,9 +115,7 @@ export class AppComponent implements OnInit, OnDestroy {
         } else {
             switch (route) {
                 case 'login': {
-                    this.dialog.open(LoginComponent, {
-                        width: '560px',
-                    });
+                    this.dialog.open(LoginComponent, { width: '560px' });
                     break;
                 }
                 case 'signup': {
@@ -142,6 +128,15 @@ export class AppComponent implements OnInit, OnDestroy {
                 }
             }
         }
+    }
+
+    onChangeLanguage(index: number) {
+        this.translateStore.dispatch(
+            translateActions.LanguageChangeStart({
+                languageIndex: index,
+                languageCode: locales[index].lang,
+            })
+        );
     }
 
     ngOnDestroy(): void {

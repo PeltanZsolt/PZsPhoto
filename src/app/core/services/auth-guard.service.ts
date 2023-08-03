@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRoute, Router, UrlTree } from '@angular/router';
 import { Observable, pipe, map, BehaviorSubject, tap, of } from 'rxjs';
 import { Store, createFeatureSelector } from '@ngrx/store';
-import { AuthState } from '../auth.store/auth.reducer';
+import { AuthState } from '../store/auth.store/auth.reducer';
 
 @Injectable({
     providedIn: 'root',

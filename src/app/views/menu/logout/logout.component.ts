@@ -1,10 +1,9 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-// import { AuthService } from '../../../core/services/auth.service.ts todelete';
 import { Store, createFeatureSelector } from '@ngrx/store';
-import { AuthState } from 'src/app/core/auth.store/auth.reducer';
-import * as AuthActions from '../../../core/auth.store/auth.actions';
+import { AuthState } from 'src/app/core/store/auth.store/auth.reducer';
+import * as AuthActions from '../../../core/store/auth.store/auth.actions';
 import { map, take } from 'rxjs';
 
 @Component({
@@ -16,7 +15,6 @@ export class LogoutComponent {
     constructor(
         public dialogRef: MatDialogRef<LogoutComponent>,
         private router: Router,
-        // private authService: AuthService,
         private store: Store<AuthState>,
         @Inject(MAT_DIALOG_DATA) public data: null
     ) {}
@@ -28,14 +26,16 @@ export class LogoutComponent {
         this.dialogRef.close();
 
         this.store
-        .select(createFeatureSelector<AuthState>('auth'))
-        .pipe(
-            take(1),
-            map((state) => {
-            if (state.user.isAdmin) {
-                this.router.navigate(['/']);
-            }
-            this.store.dispatch(AuthActions.Logout());
-        })).subscribe();
+            .select(createFeatureSelector<AuthState>('auth'))
+            .pipe(
+                take(1),
+                map((state) => {
+                    if (state.user.isAdmin) {
+                        this.router.navigate(['/']);
+                    }
+                    this.store.dispatch(AuthActions.Logout());
+                })
+            )
+            .subscribe();
     }
 }

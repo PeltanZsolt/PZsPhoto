@@ -1,7 +1,7 @@
 <div class="logoutdialog-wrapper">
-    <h1 mat-dialog-title><strong>Are you sure you want to log out?</strong></h1>
+    <h1 mat-dialog-title><strong>{{'Logout.SureToLogOut' | translate}}</strong></h1>
     <div mat-dialog-actions>
-        <button mat-raised-button mat-dialog-close>Stay</button>
-        <button id="logout" mat-raised-button (click)="onOkClick()">Log out</button>
+        <button mat-raised-button mat-dialog-close>{{'Logout.Stay' | translate}}</button>
+        <button id="logout" mat-raised-button (click)="onOkClick()">{{'Logout.Logout' | translate}}</button>
     </div>
 </div>
