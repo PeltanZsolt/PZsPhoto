@@ -99,8 +99,8 @@ export const locale: LocaleModel = {
             copyrightText:
                 '(c) Copyright 2023 Peltan Zsolt. Photos by Peltan Zsolt.',
             Version: 'Version',
-            visitorsCountText1: 'Currently there are ',
-            visitorsCountText2: ' user(s) viewing this site.',
+            connectedClientsCount1: 'Currently there are ',
+            connectedClientsCount2: ' user(s) viewing this site.',
             visitorsCountText: 'Total number of visitors:',
         },
     },

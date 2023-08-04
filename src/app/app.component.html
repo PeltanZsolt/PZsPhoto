@@ -4,7 +4,7 @@
         <div id="pzsphoto-logo">
             <img src="../assets/logo/pzs photo logo.svg" alt="PZS Photo logo" height="60" routerLink="/" />
         </div>
-        <p *ngIf="(userState$ | async)?.username">
+        <p id="welcome" *ngIf="(userState$ | async)?.username">
             {{'Menu.Welcome' | translate}}, {{(userState$ | async)!.username}}!
         </p>
         <div id="full-menu">
@@ -49,8 +49,8 @@
             {{'Footer.backToTop' | translate}}
         </button>
         <div>
-            <p>{{'Footer.copyrightText' | translate}} <br> {{'Footer.Version' | translate}}: {{version}}. {{'Footer.visitorsCountText1' | translate}}
-                {{connectedClientsCount}} {{'Footer.visitorsCountText2' | translate}} </p>
+            <p>{{'Footer.copyrightText' | translate}} <br> {{'Footer.Version' | translate}}: {{version}}. {{'Footer.connectedClientsCount1' | translate}}
+                {{connectedClientsCount}} {{'Footer.connectedClientsCount2' | translate}} </p>
         </div>
     </div>
     <div id="footer-right">

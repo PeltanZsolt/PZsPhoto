@@ -100,8 +100,8 @@ export const locale: LocaleModel = {
             copyrightText:
                 '(c) Peltán Zsolt, 2023. Minden jog fenntartva. Képek: Peltán Zsolt.',
             Version: 'Verzószám',
-            visitorsCountText1: 'Jelenleg',
-            visitorsCountText2: 'felhasználó böngészi ezt az oldalt',
+            connectedClientsCount1: 'Jelenleg',
+            connectedClientsCount2: 'felhasználó böngészi ezt az oldalt',
             visitorsCountText: 'Eddigi megtekintések száma:',
         },
     },

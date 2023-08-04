@@ -1,6 +1,11 @@
-import { AfterContentInit, Component, OnDestroy, OnInit } from '@angular/core';
+import {
+    AfterContentInit,
+    Component,
+    OnDestroy,
+    OnInit,
+} from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { Subscription, forkJoin, switchMap, tap, concat, of, map } from 'rxjs';
+import { Subscription, forkJoin, switchMap, tap, concat, map } from 'rxjs';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { PhotoService } from '../../../core/services/photo.service';
@@ -71,6 +76,7 @@ export class CarouselComponent implements OnInit, AfterContentInit, OnDestroy {
             .subscribe();
         this.subscriptions.push(subscription);
 
+        document.ondblclick = () => this.toggleFullScreen();
         document.onkeydown = this.listenToKeys;
         window.onresize = () => this.resizeElements();
 
@@ -148,10 +154,6 @@ export class CarouselComponent implements OnInit, AfterContentInit, OnDestroy {
 
     handleArrowNavigation(event: string) {
         switch (event) {
-            case 'Enter':
-            case 'NumpadEnter':
-                this.toggleFullScreen();
-                break;
             case 'ArrowLeft':
                 if (this.previousRoute) {
                     this.router.navigate([
@@ -302,8 +304,8 @@ export class CarouselComponent implements OnInit, AfterContentInit, OnDestroy {
             this.store
                 .select(createFeatureSelector<AuthState>('auth'))
                 .pipe(
-                    map((state: AuthState) =>{
-                         const newComment: Comment = {
+                    map((state: AuthState) => {
+                        const newComment: Comment = {
                             photoId: this.photoAttributes.id!,
                             user: state.user.username!,
                             commentText: this.newCommentText,
@@ -313,34 +315,34 @@ export class CarouselComponent implements OnInit, AfterContentInit, OnDestroy {
                         return newComment;
                     }),
                     switchMap((newComment: Comment) =>
-                        this.commentService
-                            .postComment(newComment)
-                            .pipe(
-                                tap((res: any) => {
-                                    if (res.error) {
-                                        this.dialog.open(ErrordialogComponent, {
-                                            data: {
-                                                messageHeader:
-                                                    'An error occured on the remote server:',
-                                                message: res.error.message,
-                                            },
-                                        });
-                                        return;
-                                    }
-                                    if (res.averageRating) {
-                                        const successMessage = 'Comment uploaded successfuly';
-                                        this.dialog.open(SuccessdialogComponent, {
-                                            data: {
-                                                message: successMessage,
-                                                duration: 2000,
-                                            },
-                                        });
-                                    }
-                                    this.comments.unshift(newComment);
-                                    this.resetCommentsForm();
-                                    this.photoAttributes.averageRating = res.averageRating;
-                                })
-                            )
+                        this.commentService.postComment(newComment).pipe(
+                            tap((res: any) => {
+                                if (res.error) {
+                                    this.dialog.open(ErrordialogComponent, {
+                                        data: {
+                                            messageHeader:
+                                                'An error occured on the remote server:',
+                                            message: res.error.message,
+                                        },
+                                    });
+                                    return;
+                                }
+                                if (res.averageRating) {
+                                    const successMessage =
+                                        'Comment uploaded successfuly';
+                                    this.dialog.open(SuccessdialogComponent, {
+                                        data: {
+                                            message: successMessage,
+                                            duration: 2000,
+                                        },
+                                    });
+                                }
+                                this.comments.unshift(newComment);
+                                this.resetCommentsForm();
+                                this.photoAttributes.averageRating =
+                                    res.averageRating;
+                            })
+                        )
                     )
                 )
                 .subscribe()
