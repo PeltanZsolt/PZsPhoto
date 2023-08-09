@@ -1,24 +1,30 @@
-import {
-    AfterContentInit,
-    Component,
-    OnDestroy,
-    OnInit,
-} from '@angular/core';
+import { AfterContentInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { Subscription, forkJoin, switchMap, tap, concat, map } from 'rxjs';
+import {
+    Subscription,
+    switchMap,
+    tap,
+    map,
+    of,
+    distinctUntilChanged,
+} from 'rxjs';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { PhotoService } from '../../../core/services/photo.service';
 import { CommentService } from '../../../core/services/comment.service';
-import { ViewsService } from '../../../core/services/views.services';
 import { Comment } from '../../../core/models/comment.model';
 import { Photo } from '../../../core/models/photo.model';
 import { ErrorDialogData } from '../../../core/models/error.dialog.data.model';
 import { ErrordialogComponent } from '../../common/errordialog/errordialog.component';
-import { SuccessdialogComponent } from '../../common/successdialog/successdialog.component';
 import { SocketService } from 'src/app/core/services/socket.service';
-import { Store, createFeatureSelector } from '@ngrx/store';
+import { Store, createFeatureSelector, createSelector } from '@ngrx/store';
 import { AuthState } from 'src/app/core/store/auth.store/auth.reducer';
+import {
+    CommentsById,
+    GalleryState,
+} from 'src/app/core/store/gallery.store/gallery.reducers';
+import { GalleryByCategory } from 'src/app/core/store/gallery.store/gallery.reducers';
+import * as GalleryActions from '../../../core/store/gallery.store/gallery.actions';
 
 @Component({
     selector: 'app-carousel',
@@ -46,35 +52,105 @@ export class CarouselComponent implements OnInit, AfterContentInit, OnDestroy {
         private route: ActivatedRoute,
         private router: Router,
         private photoService: PhotoService,
-        private commentService: CommentService,
         private dialog: MatDialog,
-        private store: Store<AuthState>,
-        private viewsService: ViewsService,
+        private authStore: Store<AuthState>,
+        private galleryStore: Store<GalleryState>,
         private socketService: SocketService
     ) {}
 
+    getCommentsFromStore(state: GalleryState, photoId: number): CommentsById {
+        let commentsById: CommentsById;
+        commentsById = state.allCommentsById.filter((commentsById) => {
+            return commentsById.photoId === photoId;
+        })[0];
+        return commentsById;
+    }
+
     ngOnInit(): void {
-        const subscription = this.route.params
+        let category = '';
+
+        const createGallerySelector = createSelector(
+            createFeatureSelector<GalleryState>('gallery'),
+            (state) => state.gallery
+        );
+
+        const photoSubscription = this.route.params
+            .pipe(
+                switchMap((params) => {
+                    this.id = Number(params['id']);
+                    category = params['category'];
+                    return this.galleryStore.select(createGallerySelector);
+                }),
+                map((gallery: GalleryByCategory[]) => {
+                    const photos = gallery.find(
+                        (galleryByCategory) =>
+                            galleryByCategory.category === category
+                    )?.photosByCategory;
+                    const photo: Photo = photos?.find(
+                        (photo) => photo.id === this.id
+                    )!;
+                    if (!photos || !photo) {
+                        this.galleryStore.dispatch(
+                            GalleryActions.FetchCategoryStart({ category })
+                        );
+                        return this.id;
+                    }
+                    this.photoAttributes = photo;
+                    this.setArrows(photos);
+                    return this.id;
+                }),
+                distinctUntilChanged(),
+                tap(() => {
+                    this.galleryStore.dispatch(
+                        GalleryActions.IncrementViewsNrStart({
+                            photoId: this.id,
+                        })
+                    );
+                }),
+                switchMap(() => {
+                    return this.photoService.getPhotoBlob(this.id!);
+                })
+            )
+            .subscribe((res) => {
+                this.getPhotoBlob(res);
+            });
+        this.subscriptions.push(photoSubscription);
+
+        const createCommentsSelector = createSelector(
+            createFeatureSelector<GalleryState>('gallery'),
+            (state) => state.allCommentsById
+        );
+
+        const commentsSubscription = this.route.params
             .pipe(
                 switchMap((params: Params) => {
-                    this.id = params['id'];
-                    return forkJoin([
-                        this.photoService.getPhotoBlob(this.id),
-                        this.commentService.getCommentsByPhotoId(this.id),
-                        concat(
-                            this.viewsService.incrementViewsNr(Number(this.id)),
-                            this.photoService.getPhotoAttributes(this.id)
-                        ),
-                    ]);
+                    this.id = Number(params['id']);
+                    return this.galleryStore
+                        .select(createCommentsSelector)
+                        .pipe(
+                            map((allCommentsById: CommentsById[]) =>
+                                allCommentsById.find(
+                                    (commentsById) =>
+                                        commentsById.photoId === this.id
+                                )
+                            )
+                        );
                 }),
-                tap((res) => {
-                    this.getPhotoBlob(res[0]);
-                    this.getComments(res[1]);
-                    this.getPhotoAttributes(res[2][0]);
+                switchMap((commentsById) => {
+                    if (!commentsById || !commentsById.photoId) {
+                        this.galleryStore.dispatch(
+                            GalleryActions.FetchCommentsStart({
+                                photoId: this.id,
+                            })
+                        );
+                    } else {
+                        this.comments = commentsById.comments;
+                    }
+                    return of();
                 })
             )
             .subscribe();
-        this.subscriptions.push(subscription);
+        this.subscriptions.push(commentsSubscription);
 
         document.ondblclick = () => this.toggleFullScreen();
         document.onkeydown = this.listenToKeys;
@@ -88,7 +164,7 @@ export class CarouselComponent implements OnInit, AfterContentInit, OnDestroy {
         });
 
         this.subscriptions.push(
-            this.store
+            this.authStore
                 .select(createFeatureSelector<AuthState>('auth'))
                 .subscribe((state) => {
                     this.isLoggedIn = !!state.user.username;
@@ -96,44 +172,44 @@ export class CarouselComponent implements OnInit, AfterContentInit, OnDestroy {
         );
 
         this.subscriptions.push(
-            this.socketService.socketCommentEvent.subscribe((event) => {
-                if (event.photoId === Number(this.id)) {
+            this.socketService.socketCommentEvent.subscribe((event: any) => {
+                if (event.newComment.photoId === Number(this.id)) {
                     const newComment = {
                         photoId: this.id,
-                        user: event.user,
-                        commentText: event.commentText,
-                        rating: Number(event.rating),
-                        viewsNr: event.viewsNr,
+                        user: event.newComment.user,
+                        commentText: event.newComment.commentText,
+                        rating: Number(event.newComment.rating),
+                        viewsNr: event.newComment.viewsNr,
                     };
-                    this.comments.unshift(newComment);
+                    this.galleryStore.dispatch(
+                        GalleryActions.PostCommentSuccess({
+                            newComment,
+                            newAverageRating: event.newAverageRating,
+                        })
+                    );
                 }
             })
         );
     }
 
-    getPhotoBlob(res0: any) {
+    getPhotoBlob(res: any) {
         const reader = new FileReader();
-        const blob = res0 as Blob;
+        const blob = res as Blob;
         reader.onload = () => {
             this.photoUrl = reader.result as ArrayBuffer;
         };
         reader.readAsDataURL(blob);
     }
 
-    getComments(res1: any) {
-        this.comments = res1;
-    }
-
-    getPhotoAttributes(res2: any) {
-        this.photoAttributes = res2;
+    setArrows(photos: Photo[]) {
         this.previousRoute = '';
         this.nextRoute = '';
         this.arrowLeft = document.getElementById('arrow-left')!;
         this.arrowRight = document.getElementById('arrow-right')!;
         this.enableArrowEl(this.arrowLeft);
         this.enableArrowEl(this.arrowRight);
-        this.getPreviousRoute();
-        this.getNextRoute();
+        this.getPreviousRoute(photos);
+        this.getNextRoute(photos);
     }
 
     listenToKeys = (event: KeyboardEvent) => {
@@ -190,42 +266,28 @@ export class CarouselComponent implements OnInit, AfterContentInit, OnDestroy {
         }
     }
 
-    getPreviousRoute() {
-        const subscription = this.photoService
-            .getPhotoListByCategory(this.photoAttributes.category)
-            .subscribe((res: Photo[]) => {
-                const previousPhotos = res.filter((photo) => {
-                    return photo.id! < this.id;
-                });
-                if (previousPhotos.length === 0) {
-                    this.enableArrowEl(this.arrowRight);
-                    this.disableArrowEl(this.arrowLeft);
-                    return;
-                }
-                const idsList = previousPhotos.map((photo) => Number(photo.id));
-                const maxId = Math.max(...idsList).toString();
-                this.previousRoute = maxId;
-            });
-        this.subscriptions.push(subscription);
+    getPreviousRoute(photos: Photo[]) {
+        const previousPhotos = photos.filter((photo) => photo.id! < this.id);
+        if (previousPhotos.length === 0) {
+            this.enableArrowEl(this.arrowRight);
+            this.disableArrowEl(this.arrowLeft);
+            return;
+        }
+        const idsList = previousPhotos.map((photo) => Number(photo.id));
+        const maxId = Math.max(...idsList).toString();
+        this.previousRoute = maxId;
     }
 
-    getNextRoute() {
-        const subscription = this.photoService
-            .getPhotoListByCategory(this.photoAttributes.category)
-            .subscribe((res: Photo[]) => {
-                const nextPhotos = res.filter((photo) => {
-                    return photo.id! > this.id;
-                });
-                if (nextPhotos.length === 0) {
-                    this.enableArrowEl(this.arrowLeft);
-                    this.disableArrowEl(this.arrowRight);
-                    return;
-                }
-                const idsList = nextPhotos.map((photo) => Number(photo.id));
-                const minId = Math.min(...idsList).toString();
-                this.nextRoute = minId;
-            });
-        this.subscriptions.push(subscription);
+    getNextRoute(photos: Photo[]) {
+        const nextPhotos = photos.filter((photo) => photo.id! > this.id);
+        if (nextPhotos.length === 0) {
+            this.enableArrowEl(this.arrowLeft);
+            this.disableArrowEl(this.arrowRight);
+            return;
+        }
+        const idsList = nextPhotos.map((photo) => Number(photo.id));
+        const minId = Math.min(...idsList).toString();
+        this.nextRoute = minId;
     }
 
     setImageHeightToWindow() {
@@ -301,7 +363,7 @@ export class CarouselComponent implements OnInit, AfterContentInit, OnDestroy {
         }
         this.newCommentText = this.commentForm.value.newCommentText;
         this.subscriptions.push(
-            this.store
+            this.authStore
                 .select(createFeatureSelector<AuthState>('auth'))
                 .pipe(
                     map((state: AuthState) => {
@@ -310,40 +372,11 @@ export class CarouselComponent implements OnInit, AfterContentInit, OnDestroy {
                             user: state.user.username!,
                             commentText: this.newCommentText,
                             rating: this.newRating,
-                            // viewsNr: 1,
                         };
-                        return newComment;
-                    }),
-                    switchMap((newComment: Comment) =>
-                        this.commentService.postComment(newComment).pipe(
-                            tap((res: any) => {
-                                if (res.error) {
-                                    this.dialog.open(ErrordialogComponent, {
-                                        data: {
-                                            messageHeader:
-                                                'An error occured on the remote server:',
-                                            message: res.error.message,
-                                        },
-                                    });
-                                    return;
-                                }
-                                if (res.averageRating) {
-                                    const successMessage =
-                                        'Comment uploaded successfuly';
-                                    this.dialog.open(SuccessdialogComponent, {
-                                        data: {
-                                            message: successMessage,
-                                            duration: 2000,
-                                        },
-                                    });
-                                }
-                                this.comments.unshift(newComment);
-                                this.resetCommentsForm();
-                                this.photoAttributes.averageRating =
-                                    res.averageRating;
-                            })
-                        )
-                    )
+                        this.galleryStore.dispatch(
+                            GalleryActions.PostCommentStart({ newComment })
+                        );
+                    })
                 )
                 .subscribe()
         );

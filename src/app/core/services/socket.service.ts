@@ -27,7 +27,7 @@ export class SocketService {
         this.socket.on('message', (message: any) => {
             switch (message.messageSubject) {
                 case 'New comment posted': {
-                    this.socketCommentEvent.emit(message.newComment);
+                    this.socketCommentEvent.emit({newComment: message.newComment, newAverageRating: message.newAverageRating});
                     break;
                 }
                 case 'Clients count changed': {
@@ -43,13 +43,5 @@ export class SocketService {
             };
             this.socket.connect();
         })
-    }
-
-    emitMessage(message: string) {
-        this.socket.emit('message', message);
-    }
-
-    getSocketId() {
-        return this.id;
     }
 }

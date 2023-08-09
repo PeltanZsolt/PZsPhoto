@@ -4,6 +4,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { GalleryModule } from './views/gallery/gallery.module';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -21,7 +22,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { AppComponent } from './app.component';
-import { HomeComponent } from './views/home/home.component';
 import { LoginComponent } from './views/menu/login/login.component';
 import { SignupComponent } from './views/menu/signup/signup.component';
 import { ContactComponent } from './views/menu/contact/contact.component';
@@ -29,10 +29,6 @@ import { LogoutComponent } from './views/menu/logout/logout.component';
 import { UploadComponent } from './views/menu/admin/upload/upload.component';
 import { StatisticsComponent } from './views/menu/admin/statistics/statistics.component';
 import { UsersComponent } from './views/menu/admin/users/users.component';
-import { GalleryComponent } from './views/gallery/gallery.component';
-import { CarouselComponent } from './views/gallery/carousel/carousel.component';
-import { ImageElementComponent } from './views/gallery/img.el/imageelement.component';
-import { RatingComponent } from './views/gallery/rating/rating.component';
 import { SuccessdialogComponent } from './views/common/successdialog/successdialog.component';
 import { InputdialogComponent } from './views/common/inputdialog/inputdialog.component';
 import { ErrordialogComponent } from './views/common/errordialog/errordialog.component';
@@ -60,12 +56,7 @@ import { TranslateEffects } from './core/store/translate.store/translate.effects
 @NgModule({
     declarations: [
         AppComponent,
-        HomeComponent,
         UploadComponent,
-        GalleryComponent,
-        CarouselComponent,
-        ImageElementComponent,
-        RatingComponent,
         ContactComponent,
         LoginComponent,
         SignupComponent,
@@ -84,6 +75,7 @@ import { TranslateEffects } from './core/store/translate.store/translate.effects
         HttpClientModule,
         ReactiveFormsModule,
         BrowserAnimationsModule,
+        GalleryModule,
 
         MatFormFieldModule,
         MatInputModule,
@@ -99,8 +91,10 @@ import { TranslateEffects } from './core/store/translate.store/translate.effects
         MatAutocompleteModule,
         MatMenuModule,
         MatToolbarModule,
+
         StoreModule.forRoot({auth: authReducer, translate: translateReducer}),
         EffectsModule.forRoot([AuthEffects, TranslateEffects]),
+
         TranslateModule.forRoot(),
     ],
     providers: [

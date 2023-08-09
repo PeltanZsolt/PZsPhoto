@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute, Router, UrlTree } from '@angular/router';
-import { Observable, pipe, map, BehaviorSubject, tap, of } from 'rxjs';
+import { Observable, map, BehaviorSubject } from 'rxjs';
 import { Store, createFeatureSelector } from '@ngrx/store';
 import { AuthState } from '../store/auth.store/auth.reducer';
 
