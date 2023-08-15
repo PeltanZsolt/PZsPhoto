@@ -1,4 +1,4 @@
-import { LocaleModel } from "../models/locales.model";
+import { LocaleModel } from '../models/locales.model';
 
 export const locale: LocaleModel = {
     lang: 'hu',
@@ -11,6 +11,11 @@ export const locale: LocaleModel = {
             Contact: 'Kapcsolat',
             Legal: 'Impresszum',
             Admin: 'Admin',
+            Upload: 'Feltöltés',
+            DBbackup: 'DB mentése',
+            FilesBackup: "Fájlok mentése",
+            Users: 'Felhasználók',
+            Statistics: 'Statisztikák',
             en: 'Angol',
             hu: 'Magyar',
         },
@@ -93,10 +98,10 @@ export const locale: LocaleModel = {
             OK: 'OK',
         },
         Error: {
-            GotIt: "Rendben",
+            GotIt: 'Rendben',
         },
         Footer: {
-            backToTop: "Ugrás a lap tetejéhez",
+            backToTop: 'Ugrás a lap tetejéhez',
             copyrightText:
                 '(c) Peltán Zsolt, 2023. Minden jog fenntartva. Képek: Peltán Zsolt.',
             Version: 'Verzószám',

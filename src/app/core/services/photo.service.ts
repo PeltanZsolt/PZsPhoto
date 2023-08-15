@@ -142,12 +142,80 @@ export class PhotoService {
 
     private handleError(operation: string, error: HttpErrorResponse) {
         console.log(
-            'Error occured on FilesService.' +
+            'Error occured on PhotoService.' +
                 operation +
                 ': ' +
                 '\n' +
                 error.message
         );
         return of();
+    }
+
+    showTables() {
+        const url = this.url + '/showTables';
+        const headers = new HttpHeaders();
+
+        return this.http
+            .get<any>(url, {
+                headers: headers,
+            })
+            .pipe(catchError((error) => this.handleError('showTables', error)));
+    }
+
+    getTableRows(tableName: string) {
+        const url = this.url + '/getTableRows';
+        const headers = new HttpHeaders();
+        const params = new HttpParams().set('tableName', tableName);
+
+        return this.http
+            .get<any>(url, {
+                headers: headers,
+                params: params,
+            })
+            .pipe(
+                catchError((error) => this.handleError('getTableRows', error))
+            );
+    }
+
+    postTableNames(tableNames: string[]): Observable<any> {
+        const url = this.url + '/postTableNames';
+        const headers = new HttpHeaders();
+        const body = tableNames;
+
+        return this.http
+            .post<any>(url, body, {
+                headers: headers,
+            })
+            .pipe(
+                catchError((error) => this.handleError('postTableNames', error))
+            );
+    }
+
+    postTableRows(tableName: string, rows: any[]): Observable<any> {
+        const url = this.url + '/postTableRows';
+        const headers = new HttpHeaders();
+        const body = {tableName, rows};
+
+        return this.http
+            .post<any>(url, body, {
+                headers: headers,
+            })
+            .pipe(
+                catchError((error) => this.handleError('postTableRows', error))
+            );
+    }
+
+    saveFileLocally(file: File, photoAttributes: Photo) {
+        const headers = new HttpHeaders({ enctype: 'multipart/form-data' });
+
+        const formData = new FormData();
+        formData.append('file', file, file.name);
+        return this.http
+            .post<any>(this.url + '/saveFileLocally', formData, {
+                headers: headers,
+            })
+            .pipe(
+                catchError((error) => this.handleError('saveFileLocally', error))
+            );
     }
 }

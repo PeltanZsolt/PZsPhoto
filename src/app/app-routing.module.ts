@@ -12,6 +12,8 @@ import { GalleryComponent } from './views/gallery/gallery/gallery.component';
 import { Error404Component } from './views/common/error404/error404.component';
 import { AuthGuardService } from './core/services/auth-guard.service';
 import { LegalComponent } from './views/menu/legal/legal.component';
+import { DbbackupComponent } from './views/menu/admin/dbbackup/dbbackup.component';
+import { FilesBackupComponent } from './views/menu/admin/files.backup/files.backup.component';
 
 const appRouting: Routes = [
   { path: '', pathMatch: 'full', component: GalleriesComponent },
@@ -21,6 +23,8 @@ const appRouting: Routes = [
   { path: 'legal', component: LegalComponent },
   { path: 'admin', component: UploadComponent, canActivate:[AuthGuardService] },
   { path: 'upload', component: UploadComponent, canActivate:[AuthGuardService] },
+  { path: 'dbbackup', component: DbbackupComponent, canActivate:[AuthGuardService] },
+  { path: 'filesbackup', component: FilesBackupComponent, canActivate:[AuthGuardService] },
   { path: 'users', component: UsersComponent, canActivate:[AuthGuardService] },
   { path: 'statistics', component: StatisticsComponent, canActivate:[AuthGuardService] },
   { path: 'gallery/:category', component: GalleryComponent },

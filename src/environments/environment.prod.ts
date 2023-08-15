@@ -1,6 +1,6 @@
 export const environment = {
     production: true,
-    apiUrl: 'http://54.220.249.42:3000',
+    apiUrl: 'http://3.253.160.8:3000',
     version: require('../../package.json').version
 
 

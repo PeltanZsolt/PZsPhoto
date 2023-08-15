@@ -27,10 +27,12 @@ import { SignupComponent } from './views/menu/signup/signup.component';
 import { ContactComponent } from './views/menu/contact/contact.component';
 import { LogoutComponent } from './views/menu/logout/logout.component';
 import { UploadComponent } from './views/menu/admin/upload/upload.component';
+import { DbbackupComponent } from './views/menu/admin/dbbackup/dbbackup.component';
 import { StatisticsComponent } from './views/menu/admin/statistics/statistics.component';
 import { UsersComponent } from './views/menu/admin/users/users.component';
 import { SuccessdialogComponent } from './views/common/successdialog/successdialog.component';
 import { InputdialogComponent } from './views/common/inputdialog/inputdialog.component';
+import { LegalComponent } from './views/menu/legal/legal.component';
 import { ErrordialogComponent } from './views/common/errordialog/errordialog.component';
 import { Error404Component } from './views/common/error404/error404.component';
 
@@ -42,7 +44,7 @@ import { ViewsService } from './core/services/views.services';
 import { CommentService } from './core/services/comment.service';
 import { JwtInterceptorService } from './core/services/jwt-interceptor.service';
 import { SocketService } from './core/services/socket.service';
-import { LegalComponent } from './views/menu/legal/legal.component';
+import { DbBackupService } from './core/services/db.backup.service';
 
 import { Store, StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -52,22 +54,25 @@ import { AuthEffects } from './core/store/auth.store/auth.effects';
 import { TranslateModule } from '@ngx-translate/core';
 import { translateReducer } from './core/store/translate.store/translate.reducer';
 import { TranslateEffects } from './core/store/translate.store/translate.effects';
+import { FilesBackupComponent } from './views/menu/admin/files.backup/files.backup.component';
 
 @NgModule({
     declarations: [
         AppComponent,
-        UploadComponent,
-        ContactComponent,
         LoginComponent,
         SignupComponent,
         LogoutComponent,
+        ContactComponent,
+        UploadComponent,
+        DbbackupComponent,
+        LegalComponent,
         UsersComponent,
         StatisticsComponent,
         ErrordialogComponent,
         SuccessdialogComponent,
         Error404Component,
         InputdialogComponent,
-        LegalComponent,
+        FilesBackupComponent,
     ],
     imports: [
         BrowserModule,
@@ -105,6 +110,7 @@ import { TranslateEffects } from './core/store/translate.store/translate.effects
         ViewsService,
         AuthGuardService,
         SocketService,
+        DbBackupService,
         {
             provide: HTTP_INTERCEPTORS,
             useClass: JwtInterceptorService,

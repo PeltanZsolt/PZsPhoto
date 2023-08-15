@@ -78,7 +78,6 @@ export class AppComponent implements OnInit, OnDestroy {
             new MenuItem('Logout', this.userState$.pipe(map((state) => !!state.username)), 'openDialog', 'logout' ),
             new MenuItem('Contact', of(true), 'navigate', '/contact'),
             new MenuItem('Legal', of(true), 'navigate', '/legal'),
-            new MenuItem('Admin', this.userState$.pipe(map((state) => state.isAdmin!)), 'navigate', '/admin'),
         ];
 
         this.socketService.initSocket();
@@ -129,6 +128,8 @@ export class AppComponent implements OnInit, OnDestroy {
             }
         }
     }
+
+    handleAdminMenuItemClick() {}
 
     onChangeLanguage(index: number) {
         this.translateStore.dispatch(
